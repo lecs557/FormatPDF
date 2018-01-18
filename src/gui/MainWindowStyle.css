@@ -1,0 +1,9 @@
+#vbox {
+	-fx-background-color: skyblue;
+	-fx-padding: 15;
+	
+}
+
+.button {
+	-fx-min-width: 70px;
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/barcodes-7.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/font-asian-7.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/forms-7.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/hyph-7.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/io-7.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/itext-asian-5.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/itextg-5.5.10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/itext-hyph-xml-5.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/itextpdf-5.5.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/itext-pdfa-5.5.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/itext-xtra-5.5.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/kernel-7.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/pdfa-7.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/pdftest-7.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/User/git/PDFFilter/jars/sign-7.0.4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

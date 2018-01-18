@@ -1,0 +1,45 @@
+
+	<?import javafx.scene.control.*?>
+	<?import javafx.scene.layout.*?>
+	
+
+<VBox stylesheets="gui/MainWindowStyle.css" fx:id="vbox" prefHeight="250.0" prefWidth="350.0" 
+spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" 
+fx:controller="windowCtl.MainWindowController">
+	<children>
+	    <HBox spacing="10">
+	    	<Label 	prefHeight="30.0" text="Select file" textAlignment="LEFT"/>
+	    	<Button fx:id="browse" text="Durchsuchen..." onAction="#onPressBrowse"></Button>
+	    </HBox>
+	    <HBox spacing="10">
+	    	<Label 	prefHeight="30.0" text="File" textAlignment="LEFT"/>
+	    	<TextField fx:id="tf_absolutePath" prefWidth="180.0" editable="false"/>
+	    	<Label 	prefHeight="30.0" text="Pages" textAlignment="LEFT"/>
+	    	<TextField fx:id="tf_pages" prefWidth="50.0" editable="false"/>   	
+	    </HBox>   
+	    <HBox spacing="10">
+	    	<Label 	prefHeight="30.0" text="Start" textAlignment="LEFT"/>
+	    	<TextField fx:id="tf_startPage" prefWidth="50" onKeyReleased="#validatePages" text="1" disable="true"/>
+	    	<Label 	prefHeight="30.0" text="End" textAlignment="LEFT"/>
+	    	<TextField fx:id="tf_endPage" prefWidth ="50" text="20" onKeyReleased="#validatePages" disable="true" />
+	    </HBox>   
+	    <HBox spacing="10">
+	    	<Label 	prefHeight="30.0" text="Select destination" textAlignment="LEFT"/>
+	    	<Button fx:id="browseDesBtn" text="Durchsuchen..." onAction="#onPressBrowseDes" disable="true"></Button>
+	    </HBox>
+	        <HBox spacing="10">
+	    	<Label 	prefHeight="30.0" text="Destination" textAlignment="LEFT"/>
+	    	<TextField fx:id="tf_pathDes" prefWidth="200.0" editable="false"/>
+	    </HBox>	
+	    <HBox alignment="CENTER">
+		<ProgressBar fx:id="bar" prefWidth="210"/>	
+	    </HBox>
+		<HBox spacing="10">
+	    	<Button fx:id="okBtn" onAction="#onPressOk"  text="OK" textAlignment="CENTER" disable="true" />
+	    	<Button fx:id="analizeBtn" onAction="#onPressAnalize"  text="Analize" textAlignment="CENTER" disable="true" />
+	    </HBox>
+	    <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0">
+	    	<Button onAction="#onPressClose"   text="Close" textAlignment="CENTER"  />
+	    </HBox> 
+	</children>
+</VBox>
