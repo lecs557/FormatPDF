@@ -1,8 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import model.DailyText;
+import model.Chapter;
 import model.FontFilter;
 import model.Main;
 import model.Session;
@@ -26,13 +27,18 @@ public class PDFController {
 	private AnalizeController analize = session.getAnalizeController();
 	private PdfReader reader = session.getPdfReader();
 	
-	private DailyText today;
+	private Chapter today;
 	private String todayAnalizeText ="";
 	private String todayAnalizeX ="";
-	private String segment = "";
+	private String todayAnalizeFont ="";
+	private ArrayList<String> segment = new ArrayList<String>();
+	
+	private String oldFormat = "";
 	
 	private boolean isDate = false;
+	private boolean wasBreak = false;
 	private int oldy = 500;
+	private int oldX = 0;
 	private int day=session.getStart();
 
 	
@@ -47,20 +53,21 @@ public class PDFController {
 		TextExtractionStrategy strategy = new FilteredTextRenderListener(
 				new LocationTextExtractionStrategy(), info);
 		oldy = 500;
-		segment="";
 		todayAnalizeText="";
 		todayAnalizeX="";
-		today = new DailyText();
+		todayAnalizeFont ="";
+		today = new Chapter();
 		@SuppressWarnings("unused") // <<FobtFilter>> is invoked here
 		String content = PdfTextExtractor.getTextFromPage(reader, page,
 				strategy);
 		today.getDay().add(segment);
-		createDatum();
 		todayAnalizeText += "\n------------Seite " + day + "---------\n";
 		todayAnalizeX += "\n------------Seite " + day+ "---------\n";
+		todayAnalizeFont += "\n------------Seite " + day+ "---------\n";
 		isDate=false;
 		analize.setTodayAnalizeText(todayAnalizeText);
 		analize.setTodayAnalizeX(todayAnalizeX);
+		analize.setTodayAnalizeFont(todayAnalizeFont);
 		day++;
 	}
 
@@ -74,52 +81,39 @@ public class PDFController {
 		String font = rinfo.getFont().getPostscriptFontName();
 		Vector start = rinfo.getBaseline().getStartPoint();
 		if (!word.equals("")) {
-			if (isYbigger(start) || isDate) {
-				if(!isDate){
-					today.getDay().add(segment);
-					isDate = true;
-					todayAnalizeX += "\n"+(int) start.get(0) + "  " + (int) start.get(1)+ " DATE";
-					todayAnalizeText +="\n"+word;
-					segment = word;
-					yChanged(start);
+			if (!oldFormat.equals(font) && yChanged(start)){
+				if(!todayAnalizeText.isEmpty()){
+					todayAnalizeText +="\n";
+					todayAnalizeX +="\n";
+					todayAnalizeFont+="\n";
 				}
-				else if(yChanged(start)){
-					todayAnalizeX += " "+(int) start.get(0) + "  " + (int) start.get(1)+ " D ";
-					segment += " "+word;
-					todayAnalizeText +=" "+word;
-				}else {
-					todayAnalizeText +=word;
-					segment +=word;
-				}
-			} else if (isParagraph(start)) {
-				if (font.contains("Bold") && today.getDay().size()>=1 && !today.isHasTitle() ){
-					today.getDay().add(segment);
-					today.setHasTitle(true);
+				segment.add(word);
+				oldFormat = font;
+				todayAnalizeFont +=font;
+				todayAnalizeText +=word;	
+				todayAnalizeX +=(int) start.get(0) + "  " + (int) start.get(1);
+			}
+			else if (isParagraph(start) && oldFormat.equals(font)) {
+					segment.add(word);
 					todayAnalizeX +="\n"+(int) start.get(0) + "  " + (int) start.get(1);
-					todayAnalizeText +="\n" +word;				
-					segment = word;
-				} else if(font.contains("Bold") && today.getDay().size()>=1 && today.isHasTitle()){
-					todayAnalizeX +=(int) start.get(0) + "  " + (int) start.get(1)+ "\n";
-					todayAnalizeText += word;				
-					segment += word;	
-				} else{
-					today.getDay().add(segment);
-					todayAnalizeX +="\n"+(int) start.get(0) + "  " + (int) start.get(1);
-					todayAnalizeText +="\n" +word;				
-					segment = word;					
-				}
+					todayAnalizeText +="\n" +word;								
 			} else{
-				segment += word;
-				todayAnalizeText +=word;
+				segment.add(word);
+				todayAnalizeText +=" "+word;
+			
 			}
 		}
 	}
+	
 
 	private boolean isParagraph(Vector start) {
 		int x = (int) start.get(0);
 		int y = (int) start.get(1);
-		boolean newPara = x != 104 && x != 31 && x !=25 && y!= oldy;
-		oldy = (int) start.get(1);
+		boolean newPara = y!=oldy && ( x - oldX > 3 &&  x - oldX < 18 );
+		if(y!= oldy) {		
+			oldX = x;
+		}
+		oldy = y;
 		return newPara;
 	}
 	
@@ -135,20 +129,8 @@ public class PDFController {
 		return bigger;
 	}
 
-	private void createDatum() {
-		int length = today.getDay().size();
-		today.setDatum( today.getDay().get(length-1) );
-	}
-	
-	public String getAnalizeFont() {
-		return todayAnalizeText;
-	}
 
-	public String getAnalizeX() {
-		return todayAnalizeX;
-	}
-
-	public DailyText getToday() {
+	public Chapter getToday() {
 		return today;
 	}
 }

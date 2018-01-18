@@ -1,6 +1,7 @@
 package model;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,7 +23,7 @@ import controller.TextFileController;
 public class Session {
 
 	public enum window {MainWindow,EvaluationWindow,AnalizeWindow};
-	private Stage[] stages = new Stage[3];
+	private Stage[] stages = new Stage[4];
 	private AnalizeController analizeController;
 	private PDFController pdfController;
 	private TextFileController textFileController;

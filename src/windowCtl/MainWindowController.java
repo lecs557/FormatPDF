@@ -40,44 +40,35 @@ public class MainWindowController {
 	private int i=start;
 	private int end;
 	
-	private Thread work = new Thread(){
-		public void run(){
-			try {
-				start = Integer.parseInt(tf_startPage.getText());
-				end = Integer.parseInt(tf_endPage.getText());
-				okBtn.setDisable(true);
-				setVariables();
-				process.start();
-				for (i = start; i <= end; i++) {
-					int page = i;
-					pdfctrl.readPDF(page);
-					tfctrl.writeDailytxt();
-					analizectrl.analize();
-				}	
-				analizeBtn.setDisable(false);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	};
-	
-	private Thread process = new Thread(){
-		public void run(){		
-			while(i<=end){		
-				bar.setProgress((i-start)/(float) (end-start));
-			}
-		}
-	};
-	
-	public void initialize(){
-		bar.setProgress(0);
-	}
-	
-
 	@FXML
 	private void onPressOk() {
-		work.start();
+		new Thread(){
+			public void run(){
+				try {
+					start = Integer.parseInt(tf_startPage.getText());
+					end = Integer.parseInt(tf_endPage.getText());
+					okBtn.setDisable(true);
+					setVariables();
+					new Thread(){
+						public void run(){		
+							while(i<=end){		
+								bar.setProgress((i-start)/(float) (end-start));
+							}
+						}
+					}.start();;
+					for (i = start; i <= end; i++) {
+						int page = i;
+						pdfctrl.readPDF(page);
+						tfctrl.writeDailytxt();
+						analizectrl.analize();
+					}	
+					analizeBtn.setDisable(false);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}.start();;
 	}
 	
 	@FXML
@@ -102,6 +93,7 @@ public class MainWindowController {
 			tf_pages.setText(""+pages);
 			tf_pathDes.setText("C:\\Users\\User\\Desktop\\Russisch\\");
 			browseDesBtn.setDisable(false);
+			bar.setProgress(0);
 		} else{
 			tf_startPage.setDisable(true);
 			tf_endPage.setDisable(true);

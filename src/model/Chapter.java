@@ -7,18 +7,18 @@ import java.util.ArrayList;
  * a daily text has
  * @author Marcel
  */
-public class DailyText {
+public class Chapter {
 
-	private ArrayList<String> day;
+	private ArrayList<ArrayList<String>> chapterText;
 	private String datum;
 	private boolean hasTitle;
 	
-	public DailyText() {
-		day = new ArrayList<String>();
+	public Chapter() {
+		chapterText = new ArrayList<ArrayList<String>>();
 	}
 	
-	public ArrayList<String> getDay(){
-		return day;
+	public ArrayList<ArrayList<String>> getDay(){
+		return chapterText;
 	}
 	
 	public void setDatum(String datum) {

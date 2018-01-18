@@ -10,20 +10,26 @@ import javafx.scene.control.TextArea;
 public class AnalizeWindowController {
 	AnalizeController analize = Main.getSession().getAnalizeController();
 	@FXML
-	private TextArea analizeFont;
+	private TextArea analizeText;
 	@FXML
 	private TextArea analizeX;
+	@FXML
+	private TextArea analizeFont;
 	
 	public void initialize(){
 		
-		for (String text:analize.getAnalizeText()){
-			analizeFont.setText(analizeFont.getText()+text);
+		for (String font:analize.getAnalizeFont()){
+			analizeFont.setText(analizeFont.getText()+font);
 		}
 		for (String x:analize.getAnalizeX()){
 			analizeX.setText(analizeX.getText()+x);
 		}
-		analizeFont.setEditable(false);
+		for (String text:analize.getAnalizeText()){
+			analizeText.setText(analizeText.getText()+text);
+		}
+		analizeText.setEditable(false);
 		analizeX.setEditable(false);
+		analizeFont.setEditable(false);
 	}
 	
 	@FXML
