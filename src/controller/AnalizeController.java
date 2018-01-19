@@ -9,14 +9,13 @@ import model.Session;
 public class AnalizeController {
 	private Session session = Main.getSession();
 	private TextFileController tfc = session.getTextFileController();
-	private Chapter today;
+	private ArrayList<Chapter> chapter;
 	
 	private ArrayList<ArrayList<String>> amountOfSegments = new ArrayList<ArrayList<String>>();
 	private ArrayList<String> analizeText = new ArrayList<String>();
 	private ArrayList<String> analizeX = new ArrayList<String>();
 	private ArrayList<String> analizeFont = new ArrayList<String>();
 	private ArrayList<String> amountOfMonthSegments;
-	private String todayAnalizeText;
 	private String todayAnalizeX;
 	private String todayAnalizeFont;
 	private boolean analizeOnly = true;
@@ -27,24 +26,32 @@ public class AnalizeController {
 	
 	
 	public void analize(){
-		today = Main.getSession().getPDFController().getToday();
+		chapter= Main.getSession().getPDFController().getChapter();
 		if(!analizeOnly){
-			if (!tfc.isError()){
-				if ( month.equals(today.getMonth()) ){
-					amountOfMonthSegments.add(k +" "+ (today.getDay().size()-(today.isHasTitle()?4:3)));	
-					
-				} else{
-					amountOfMonthSegments = new ArrayList<String>();
-					amountOfSegments.add(amountOfMonthSegments);
-					amountOfMonthSegments.add(k +" "+ (today.getDay().size()-(today.isHasTitle()?4:3)));
-					month = today.getMonth();
-				}
-			}			
+//			if (!tfc.isError()){
+//				if ( month.equals(today.getMonth()) ){
+//					amountOfMonthSegments.add(k +" "+ (today.getDay().size()-(today.isHasTitle()?4:3)));	
+//					
+//				} else{
+//					amountOfMonthSegments = new ArrayList<String>();
+//					amountOfSegments.add(amountOfMonthSegments);
+//					amountOfMonthSegments.add(k +" "+ (today.getDay().size()-(today.isHasTitle()?4:3)));
+//					month = today.getMonth();
+//				}
+//			}			
 		}
-			analizeText.add(todayAnalizeText);
-			analizeX.add(todayAnalizeX);
-			analizeFont.add(todayAnalizeFont);
+		analizeText.add("--------CHAPTER  \n");
+			for (int i=0; i<chapter.get(0).getParagraphs().size();i++){	
+				if (k>3){
+					analizeText.add(chapter.get(0).getParagraphs().get(i).getParagraph()+"\n");
+					analizeFont.add(chapter.get(0).getFonts().get(i)+"\n");
+					analizeX.add(chapter.get(0).getPositions().get(i)+"\n");	
+				}
+			}
+			if (k>3)
+				chapter.remove(0);
 			k++;
+			
 	}
 	
 	
@@ -54,9 +61,6 @@ public class AnalizeController {
 	}
 	public void setTodayAnalizeFont(String todayAnalizeFont) {
 		this.todayAnalizeFont = todayAnalizeFont;
-	}
-	public void setTodayAnalizeText(String analizeText) {
-		this.todayAnalizeText = analizeText;
 	}
 	public void setTodayAnalizeX(String analizeX) {
 		this.todayAnalizeX = analizeX;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import model.Chapter;
 import model.FontFilter;
 import model.Main;
+import model.Paragraph;
 import model.Session;
 
 import com.itextpdf.text.pdf.PdfReader;
@@ -27,15 +28,17 @@ public class PDFController {
 	private AnalizeController analize = session.getAnalizeController();
 	private PdfReader reader = session.getPdfReader();
 	
-	private Chapter today;
+	private ArrayList<Chapter> chapter = new ArrayList<Chapter>();
+	private Chapter currentChapter;
 	private String todayAnalizeText ="";
 	private String todayAnalizeX ="";
 	private String todayAnalizeFont ="";
-	private ArrayList<String> segment = new ArrayList<String>();
+	private ArrayList<String> segment;
 	
 	private String oldFormat = "";
 	
-	private boolean isDate = false;
+	private Paragraph currentParagraph;
+	private boolean isTitle = false;
 	private boolean wasBreak = false;
 	private int oldy = 500;
 	private int oldX = 0;
@@ -53,22 +56,10 @@ public class PDFController {
 		TextExtractionStrategy strategy = new FilteredTextRenderListener(
 				new LocationTextExtractionStrategy(), info);
 		oldy = 500;
-		todayAnalizeText="";
-		todayAnalizeX="";
-		todayAnalizeFont ="";
-		today = new Chapter();
+		oldFormat=" ";
 		@SuppressWarnings("unused") // <<FobtFilter>> is invoked here
 		String content = PdfTextExtractor.getTextFromPage(reader, page,
 				strategy);
-		today.getDay().add(segment);
-		todayAnalizeText += "\n------------Seite " + day + "---------\n";
-		todayAnalizeX += "\n------------Seite " + day+ "---------\n";
-		todayAnalizeFont += "\n------------Seite " + day+ "---------\n";
-		isDate=false;
-		analize.setTodayAnalizeText(todayAnalizeText);
-		analize.setTodayAnalizeX(todayAnalizeX);
-		analize.setTodayAnalizeFont(todayAnalizeFont);
-		day++;
 	}
 
 	/**
@@ -79,28 +70,29 @@ public class PDFController {
 	public void createText(TextRenderInfo rinfo) {
 		String word = rinfo.getText().replace("-", "");
 		String font = rinfo.getFont().getPostscriptFontName();
-		Vector start = rinfo.getBaseline().getStartPoint();
-		if (!word.equals("")) {
-			if (!oldFormat.equals(font) && yChanged(start)){
-				if(!todayAnalizeText.isEmpty()){
-					todayAnalizeText +="\n";
-					todayAnalizeX +="\n";
-					todayAnalizeFont+="\n";
-				}
-				segment.add(word);
-				oldFormat = font;
-				todayAnalizeFont +=font;
-				todayAnalizeText +=word;	
-				todayAnalizeX +=(int) start.get(0) + "  " + (int) start.get(1);
-			}
-			else if (isParagraph(start) && oldFormat.equals(font)) {
-					segment.add(word);
-					todayAnalizeX +="\n"+(int) start.get(0) + "  " + (int) start.get(1);
-					todayAnalizeText +="\n" +word;								
-			} else{
-				segment.add(word);
-				todayAnalizeText +=" "+word;
+		Vector startBase = rinfo.getBaseline().getStartPoint();
+		Vector startAscent = rinfo.getAscentLine().getStartPoint();
+		int size = (int) (startAscent.get(1)-startBase.get(1));
+		
+		if (!word.equals("") && (int)startBase.get(1)!=43) {
 			
+			if (!oldFormat.equals(font)){
+				
+				if(font.contains("Bold")){
+					currentChapter = new Chapter();
+					chapter.add(currentChapter);
+					paragraph(word, font, startBase, size);
+					
+				} else {
+					paragraph(word, font, startBase, size);
+				}
+				oldFormat = font;
+				isParagraph(startBase);
+			}
+			else if (isParagraph(startBase)) {
+				paragraph(word, font, startBase, size);
+			} else{
+				currentParagraph.add(word);
 			}
 		}
 	}
@@ -109,7 +101,7 @@ public class PDFController {
 	private boolean isParagraph(Vector start) {
 		int x = (int) start.get(0);
 		int y = (int) start.get(1);
-		boolean newPara = y!=oldy && ( x - oldX > 3 &&  x - oldX < 18 );
+		boolean newPara = (y-oldy!=0 && 3 < x - oldX  &&  x - oldX < 18 ) || oldy - y > 25;
 		if(y!= oldy) {		
 			oldX = x;
 		}
@@ -120,7 +112,7 @@ public class PDFController {
 	private boolean yChanged(Vector start){
 		int y = (int) start.get(1);
 		boolean changed = y!= oldy;
-		oldy = (int) start.get(1);
+		oldy = y;
 		return changed;
 	}
 
@@ -130,7 +122,15 @@ public class PDFController {
 	}
 
 
-	public Chapter getToday() {
-		return today;
+	public ArrayList<Chapter> getChapter() {
+		return chapter;
+	}
+	
+	private void paragraph(String word, String font, Vector start, int size){
+		currentParagraph = new Paragraph(word);
+		currentChapter.getParagraphs().add(currentParagraph);
+		currentChapter.getFonts().add(font+" "+size);
+		currentChapter.getPositions().add((int) start.get(0)+"  "+(int) start.get(1));
+		
 	}
 }

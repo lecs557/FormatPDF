@@ -9,35 +9,27 @@ import java.util.ArrayList;
  */
 public class Chapter {
 
-	private ArrayList<ArrayList<String>> chapterText;
-	private String datum;
-	private boolean hasTitle;
-	
+	private ArrayList<Paragraph> paragraphs;
+	private ArrayList<String> fonts;
+	private ArrayList<String> positions;
+		
 	public Chapter() {
-		chapterText = new ArrayList<ArrayList<String>>();
+		paragraphs = new ArrayList<Paragraph>();
+		fonts = new ArrayList<String>() ;
+		positions = new ArrayList<String>();
 	}
 	
-	public ArrayList<ArrayList<String>> getDay(){
-		return chapterText;
+	public ArrayList<Paragraph> getParagraphs(){
+		return paragraphs;
+	}
+
+	public ArrayList<String> getFonts() {
+		return fonts;
+	}
+
+	public ArrayList<String> getPositions() {
+		return positions;
 	}
 	
-	public void setDatum(String datum) {
-		this.datum = datum;
-	}
-
-	public String getDatum(){
-		return datum;
-	}
 	
-	public String getMonth(){
-		return datum.split(" ")[0];
-	}
-
-	public boolean isHasTitle() {
-		return hasTitle;
-	}
-
-	public void setHasTitle(boolean hasTitle) {
-		this.hasTitle = hasTitle;
-	}
 }
