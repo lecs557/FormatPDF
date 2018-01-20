@@ -9,6 +9,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.Main;
 import model.Session;
 import model.Session.window;
@@ -136,7 +137,9 @@ public class MainWindowController {
 	
 	
 	private void setVariables(){
+		session.refreshStages();
 		session.setStart(start);
+		session.setEnd(end);
 		session.setDestination(tf_pathDes.getText());
 		session.setPdfReader(reader);
 		tfctrl = new TextFileController();

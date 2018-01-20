@@ -40,18 +40,33 @@ public class AnalizeController {
 //				}
 //			}			
 		}
-		analizeText.add("--------CHAPTER  \n");
-			for (int i=0; i<chapter.get(0).getParagraphs().size();i++){	
-				if (k>3){
-					analizeText.add(chapter.get(0).getParagraphs().get(i).getParagraph()+"\n");
-					analizeFont.add(chapter.get(0).getFonts().get(i)+"\n");
-					analizeX.add(chapter.get(0).getPositions().get(i)+"\n");	
+		analizeText.add(k+"--------CHAPTER  \n");
+		analizeFont.add(k+"--------CHAPTER  \n");
+		analizeX.add(k+"--------CHAPTER  \n");
+		for (int i=0; i<chapter.get(0).getParagraphs().size();i++){	
+			if (k>3){
+				analizeText.add(chapter.get(0).getParagraphs().get(i).getParagraph()+"\n");
+				analizeFont.add(chapter.get(0).getFonts().get(i)+"\n");
+				analizeX.add(chapter.get(0).getPositions().get(i)+"\n");	
+			}
+		}
+		if (k>3){
+			chapter.remove(0);			
+		}
+		if(k==Main.getSession().getEnd()){
+			for(Chapter ch:chapter){
+				analizeText.add(k+"--------CHAPTER  \n");
+				analizeFont.add(k+"--------CHAPTER  \n");
+				analizeX.add(k+"--------CHAPTER  \n");
+				for (int i=0; i<ch.getParagraphs().size();i++){	{
+					analizeText.add(ch.getParagraphs().get(i).getParagraph()+"\n");
+					analizeFont.add(ch.getFonts().get(i)+"\n");
+					analizeX.add(ch.getPositions().get(i)+"\n");							
+					}
 				}
 			}
-			if (k>3)
-				chapter.remove(0);
-			k++;
-			
+		}
+		k++;
 	}
 	
 	

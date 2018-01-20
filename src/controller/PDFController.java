@@ -56,7 +56,6 @@ public class PDFController {
 		TextExtractionStrategy strategy = new FilteredTextRenderListener(
 				new LocationTextExtractionStrategy(), info);
 		oldy = 500;
-		oldFormat=" ";
 		@SuppressWarnings("unused") // <<FobtFilter>> is invoked here
 		String content = PdfTextExtractor.getTextFromPage(reader, page,
 				strategy);
@@ -74,9 +73,9 @@ public class PDFController {
 		Vector startAscent = rinfo.getAscentLine().getStartPoint();
 		int size = (int) (startAscent.get(1)-startBase.get(1));
 		
-		if (!word.equals("") && (int)startBase.get(1)!=43) {
+		if (!word.equals("") && (int)startBase.get(1)!=43 ) {
 			
-			if (!oldFormat.equals(font)){
+			if (!oldFormat.equals(font) && yChanged(startBase) ){
 				
 				if(font.contains("Bold")){
 					currentChapter = new Chapter();
@@ -87,9 +86,8 @@ public class PDFController {
 					paragraph(word, font, startBase, size);
 				}
 				oldFormat = font;
-				isParagraph(startBase);
 			}
-			else if (isParagraph(startBase)) {
+			else if (isParagraph(startBase, size)) {
 				paragraph(word, font, startBase, size);
 			} else{
 				currentParagraph.add(word);
@@ -98,10 +96,10 @@ public class PDFController {
 	}
 	
 
-	private boolean isParagraph(Vector start) {
+	private boolean isParagraph(Vector start, int size) {
 		int x = (int) start.get(0);
 		int y = (int) start.get(1);
-		boolean newPara = (y-oldy!=0 && 3 < x - oldX  &&  x - oldX < 18 ) || oldy - y > 25;
+		boolean newPara = (y-oldy!=0 && 3 < x - oldX  &&  x - oldX < 18 ) || oldy - y > size*2;
 		if(y!= oldy) {		
 			oldX = x;
 		}

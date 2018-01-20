@@ -23,11 +23,11 @@ import controller.TextFileController;
 public class Session {
 
 	public enum window {MainWindow,EvaluationWindow,AnalizeWindow};
-	private Stage[] stages = new Stage[4];
+	private Stage[] stages = new Stage[3];
 	private AnalizeController analizeController;
 	private PDFController pdfController;
 	private TextFileController textFileController;
-	private int start;
+	private int start, end;
 	private String destination;
 	private PdfReader pdfReader;
 	
@@ -112,5 +112,18 @@ public class Session {
 
 	public void setDestination(String destination) {
 		this.destination = destination;
+	}
+
+	public void refreshStages() {
+		this.stages[1] = null;
+		this.stages[2] = null;
+	}
+
+	public int getEnd() {
+		return end;
+	}
+
+	public void setEnd(int end) {
+		this.end = end;
 	}
 }
