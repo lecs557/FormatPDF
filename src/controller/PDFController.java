@@ -83,9 +83,11 @@ public class PDFController {
 					paragraph(word, font, startBase, size);
 					
 				} else {
-					paragraph(word, font, startBase, size);
+					if(currentChapter!=null)
+						paragraph(word, font, startBase, size);
 				}
-				oldFormat = font;
+				if(currentChapter!=null)
+					oldFormat = font;
 			}
 			else if (isParagraph(startBase, size)) {
 				paragraph(word, font, startBase, size);

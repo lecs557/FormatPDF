@@ -26,18 +26,7 @@ public class EvaluationWindowController {
 	private TextArea crntTA	;
 	
 	public void initialize(){
-		sess = Main.getSession();
-		tfc = Main.getSession().getTextFileController();
-		analize = Main.getSession().getAnalizeController();
 		
-		sum.setText("Gesamt: "+ tfc.getDays()+" Tage(+"+tfc.getErrorCounter()+" Fehler)");
-		
-		for(ArrayList<String> aos : analize.getAmountOfSegments()){
-			createTA();
-			for(String aoms: aos){
-				editTA(aoms+"\n");			
-			}
-		}		
 	}
 	
 	

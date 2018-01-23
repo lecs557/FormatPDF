@@ -15,9 +15,7 @@ import controller.PDFController;
 import controller.TextFileController;
 
 /**
- * Class is created by 'Main', contains the 
- * stage and starts the Controller used in
- * this session
+ * Class contains general variables and methods
  * @author Marcel
  */
 public class Session {
@@ -37,6 +35,7 @@ public class Session {
 		this.stages[0] = stage;
 	}
 	
+
 	public void openWindow(window window) throws IOException {
 		if (stages[window.ordinal()] == null){
 			Stage stage = new Stage();
