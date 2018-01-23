@@ -4,34 +4,28 @@ import java.util.ArrayList;
 
 import model.Chapter;
 import model.Main;
-import model.Session;
 
 public class AnalizeController {
-	private Session session = Main.getSession();
 	private ArrayList<Chapter> chapter;
 	
 	private ArrayList<String> analizeText = new ArrayList<String>();
 	private ArrayList<String> analizeX = new ArrayList<String>();
 	private ArrayList<String> analizeFont = new ArrayList<String>();
 	
-	private int k = session.getStart();
-	
-	
+	private int counter = 0;
 	
 	public void analize(){
 		chapter= Main.getSession().getPDFController().getChapter();
-		showChapter();
-		for (int i=1; i<chapter.get(0).getParagraphs().size();i++){	
-			if (k>3){
+		if (counter>3){
+			showChapter();
+			for (int i=1; i<chapter.get(0).getParagraphs().size();i++){	
 				analizeText.add(chapter.get(0).getParagraphs().get(i).getParagraph()+"\n");
 				analizeFont.add(chapter.get(0).getFonts().get(i)+"\n");
 				analizeX.add(chapter.get(0).getPositions().get(i)+"\n");	
 			}
-		}
-		if (k>3){
 			chapter.remove(0);			
 		}
-		if(k==Main.getSession().getEnd()){
+		if(counter==Main.getSession().getEnd()-1){
 			for(Chapter ch:chapter){
 				showChapter(ch);
 				for (int i=1; i<ch.getParagraphs().size();i++){	{
@@ -42,7 +36,7 @@ public class AnalizeController {
 				}
 			}
 		}
-		k++;
+		counter++;
 	}
 	
 	private void showChapter(){

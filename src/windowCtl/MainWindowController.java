@@ -9,7 +9,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import model.Main;
 import model.Session;
 import model.Session.window;
@@ -74,7 +73,6 @@ public class MainWindowController {
 	
 	@FXML
 	private void onPressAnalize() throws IOException{
-		session.openWindow(window.EvaluationWindow);
 		session.openWindow(window.AnalizeWindow);		
 	}
 

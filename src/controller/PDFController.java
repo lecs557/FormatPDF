@@ -25,25 +25,16 @@ import com.itextpdf.text.pdf.parser.Vector;
  */
 public class PDFController {	
 	private Session session = Main.getSession();
-	private AnalizeController analize = session.getAnalizeController();
 	private PdfReader reader = session.getPdfReader();
 	
 	private ArrayList<Chapter> chapter = new ArrayList<Chapter>();
 	private Chapter currentChapter;
-	private String todayAnalizeText ="";
-	private String todayAnalizeX ="";
-	private String todayAnalizeFont ="";
-	private ArrayList<String> segment;
 	
-	private String oldFormat = "";
-	
-	private Paragraph currentParagraph;
-	private boolean isTitle = false;
-	private boolean wasBreak = false;
+	private String oldFont = "";
 	private int oldy = 500;
 	private int oldX = 0;
-	private int day=session.getStart();
-
+	
+	private Paragraph currentParagraph;
 	
 	/**
 	 * Scans every word of the PDF-File, invokes <<FontFilter>> to get 
@@ -73,24 +64,24 @@ public class PDFController {
 		Vector startAscent = rinfo.getAscentLine().getStartPoint();
 		int size = (int) (startAscent.get(1)-startBase.get(1));
 		
-		if (!word.equals("") && (int)startBase.get(1)!=43 ) {
+		if (!word.equals("") && (int)startBase.get(1)!=43 ) { //y=43 : Seitenzahl
 			
-			if (!oldFormat.equals(font) && yChanged(startBase) ){
+			if (!oldFont.equals(font) && newLine(startBase) ){
+				
 				
 				if(font.contains("Bold")){
 					currentChapter = new Chapter();
 					chapter.add(currentChapter);
-					paragraph(word, font, startBase, size);
-					
+					startParagraph(word, font, startBase, size);
 				} else {
 					if(currentChapter!=null)
-						paragraph(word, font, startBase, size);
+						startParagraph(word, font, startBase, size);
 				}
 				if(currentChapter!=null)
-					oldFormat = font;
+					oldFont = font;
 			}
 			else if (isParagraph(startBase, size)) {
-				paragraph(word, font, startBase, size);
+				startParagraph(word, font, startBase, size);
 			} else{
 				currentParagraph.add(word);
 			}
@@ -109,24 +100,18 @@ public class PDFController {
 		return newPara;
 	}
 	
-	private boolean yChanged(Vector start){
+	private boolean newLine(Vector start){
 		int y = (int) start.get(1);
 		boolean changed = y!= oldy;
 		oldy = y;
 		return changed;
 	}
 
-	private boolean isYbigger(Vector start) {
-		boolean bigger = (int) start.get(1) > oldy;
-		return bigger;
-	}
-
-
 	public ArrayList<Chapter> getChapter() {
 		return chapter;
 	}
 	
-	private void paragraph(String word, String font, Vector start, int size){
+	private void startParagraph(String word, String font, Vector start, int size){
 		currentParagraph = new Paragraph(word);
 		currentChapter.getParagraphs().add(currentParagraph);
 		currentChapter.getFonts().add(font+" "+size);
