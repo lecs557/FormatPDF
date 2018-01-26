@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author Marcel
  */
 public class Chapter {
-
+	
 	private ArrayList<Paragraph> paragraphs;
 	private ArrayList<String> fonts;
 	private ArrayList<String> positions;

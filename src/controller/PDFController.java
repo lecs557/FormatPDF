@@ -7,6 +7,7 @@ import model.Chapter;
 import model.FontFilter;
 import model.Main;
 import model.Paragraph;
+import model.Paragraph.detail;
 import model.Session;
 
 import com.itextpdf.text.pdf.PdfReader;
@@ -62,48 +63,50 @@ public class PDFController {
 		String font = rinfo.getFont().getPostscriptFontName();
 		Vector startBase = rinfo.getBaseline().getStartPoint();
 		Vector startAscent = rinfo.getAscentLine().getStartPoint();
+		int y = (int) startBase.get(1);
 		int size = (int) (startAscent.get(1)-startBase.get(1));
 		
 		if (!word.equals("") && (int)startBase.get(1)!=43 ) { //y=43 : Seitenzahl
 			
-			if (!oldFont.equals(font) && newLine(startBase) ){
-				
+			if (!oldFont.equals(font) && newLine(startBase)){
 				
 				if(font.contains("Bold")){
-					currentChapter = new Chapter();
-					chapter.add(currentChapter);
-					startParagraph(word, font, startBase, size);
-				} else {
-					if(currentChapter!=null)
-						startParagraph(word, font, startBase, size);
+					
+					if(size>7){
+						currentChapter = new Chapter();
+						chapter.add(currentChapter);
+						startParagraph(word, font, startBase, size, detail.title);						
+					} else{
+						startParagraph(word, font, startBase, size, detail.heading);					
+					} 				
+				}else{
+					startParagraph(word, font, startBase, size, detail.paragraph);					
 				}
-				if(currentChapter!=null)
-					oldFont = font;
 			}
-			else if (isParagraph(startBase, size)) {
-				startParagraph(word, font, startBase, size);
+			else if (!belongsToCurrentParagraph(startBase, size)) {
+				startParagraph(word, font, startBase, size, detail.paragraph);
 			} else{
 				currentParagraph.add(word);
 			}
 		}
+		oldFont=font;
+		oldy = y;		
 	}
 	
 
-	private boolean isParagraph(Vector start, int size) {
+	private boolean belongsToCurrentParagraph(Vector start, int size) {
 		int x = (int) start.get(0);
 		int y = (int) start.get(1);
-		boolean newPara = (y-oldy!=0 && 3 < x - oldX  &&  x - oldX < 18 ) || oldy - y > size*2;
-		if(y!= oldy) {		
+		boolean btcp = y - oldy == 0 || -3 < x - oldX  &&  x - oldX < 10 && oldy - y < size*2;
+		if(newLine(start)) {		
 			oldX = x;
 		}
-		oldy = y;
-		return newPara;
+		return btcp;
 	}
 	
 	private boolean newLine(Vector start){
 		int y = (int) start.get(1);
-		boolean changed = y!= oldy;
-		oldy = y;
+		boolean changed = y != oldy;
 		return changed;
 	}
 
@@ -111,8 +114,8 @@ public class PDFController {
 		return chapter;
 	}
 	
-	private void startParagraph(String word, String font, Vector start, int size){
-		currentParagraph = new Paragraph(word);
+	private void startParagraph(String word, String font, Vector start, int size, detail detail){
+		currentParagraph = new Paragraph(word, detail);
 		currentChapter.getParagraphs().add(currentParagraph);
 		currentChapter.getFonts().add(font+" "+size);
 		currentChapter.getPositions().add((int) start.get(0)+"  "+(int) start.get(1));
