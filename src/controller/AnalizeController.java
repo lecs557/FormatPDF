@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.Chapter;
 import model.Main;
+import model.Paragraph;
 
 public class AnalizeController {
 	private ArrayList<Chapter> chapter;
@@ -15,23 +16,19 @@ public class AnalizeController {
 	private int counter = 0;
 	
 	public void analize(){
-		chapter= Main.getSession().getPDFController().getChapter();
-		if (counter>3){
-			showChapter();
-			for (int i=1; i<chapter.get(0).getParagraphs().size();i++){	
-				analizeText.add(chapter.get(0).getParagraphs().get(i).getParagraph()+"\n");
-				analizeFont.add(chapter.get(0).getFonts().get(i)+"\n");
-				analizeX.add(chapter.get(0).getPositions().get(i)+"\n");	
+	chapter = Main.getSession().getPDFController().getChapter();
+		
+		if (chapter.size()>=2){
+			for (int i=0; i<chapter.get(0).getParagraphs().size();i++){	
+				addAnalizeData(chapter.get(0), i);
 			}
 			chapter.remove(0);			
 		}
+		
 		if(counter==Main.getSession().getEnd()-1){
 			for(Chapter ch:chapter){
-				showChapter(ch);
-				for (int i=1; i<ch.getParagraphs().size();i++){	{
-					analizeText.add(ch.getParagraphs().get(i).getParagraph()+"\n");
-					analizeFont.add(ch.getFonts().get(i)+"\n");
-					analizeX.add(ch.getPositions().get(i)+"\n");							
+				for (int i=0; i<ch.getParagraphs().size();i++){	{
+					addAnalizeData(ch, i);						
 					}
 				}
 			}
@@ -39,20 +36,32 @@ public class AnalizeController {
 		counter++;
 	}
 	
-	private void showChapter(){
-		String chapterTitle = chapter.get(0).getParagraphs().get(0).getParagraph();
-		analizeText.add("--------"+chapterTitle+"\n");
-		analizeFont.add("--------"+chapterTitle+" \n");
-		analizeX.add("--------"+chapterTitle+"  \n");
+	private void addAnalizeData(Chapter chap, int i){
+		Paragraph paragraph = chap.getParagraphs().get(i);
+		switch (paragraph.getOrdDetail()){
+		case 0:
+			analizeText.add("||||"+paragraph.getParagraph()+"||||\n");
+			analizeFont.add("||||"+paragraph.getFont()+"|||| \n");
+			analizeX.add("||||"+paragraph.getPosition()+"||||  \n");
+			break;
+		case 1:
+			analizeText.add("----"+paragraph.getParagraph()+"\n");
+			analizeFont.add("----"+paragraph.getFont()+" \n");
+			analizeX.add("----"+paragraph.getPosition()+"  \n");
+			break;
+		case 2:
+			analizeText.add("->"+paragraph.getParagraph()+"<-\n");
+			analizeFont.add("->"+paragraph.getFont()+"<- \n");
+			analizeX.add("->"+paragraph.getPosition()+"<-  \n");		
+			break;
+		case 3:
+			analizeText.add(""+paragraph.getParagraph()+"\n");
+			analizeFont.add(""+paragraph.getFont()+" \n");
+			analizeX.add(""+paragraph.getPosition()+"  \n");
+			break;			
+		}
 	}
-	
-	private void showChapter(Chapter ch){
-		String chapterTitle = ch.getParagraphs().get(0).getParagraph();
-		analizeText.add("--------"+chapterTitle+"\n");
-		analizeFont.add("--------"+chapterTitle+" \n");
-		analizeX.add("--------"+chapterTitle+"  \n");
-	}
-	
+		
 	public ArrayList<String> getAnalizeFont() {
 		return analizeFont;
 	}

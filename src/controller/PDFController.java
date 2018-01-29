@@ -32,6 +32,7 @@ public class PDFController {
 	private Chapter currentChapter;
 	
 	private String oldFont = "";
+	private int oldSize = 0;
 	private int oldy = 500;
 	private int oldX = 0;
 	
@@ -66,13 +67,13 @@ public class PDFController {
 		int y = (int) startBase.get(1);
 		int size = (int) (startAscent.get(1)-startBase.get(1));
 		
-		if (!word.equals("") && (int)startBase.get(1)!=43 ) { //y=43 : Seitenzahl
+		if (!word.equals("") && y!=43 ) { //y=43 : Seitenzahl
 			
-			if (!oldFont.equals(font) && newLine(startBase)){
+			if (!sameFont(font, size) && newLine(y)){
 				
 				if(font.contains("Bold")){
 					
-					if(size>7){
+					if(size>10){
 						currentChapter = new Chapter();
 						chapter.add(currentChapter);
 						startParagraph(word, font, startBase, size, detail.title);						
@@ -83,6 +84,10 @@ public class PDFController {
 					startParagraph(word, font, startBase, size, detail.paragraph);					
 				}
 			}
+			else if(!sameFont(font, size) && !newLine(y)){
+				currentParagraph.setBold(currentParagraph.getOrdDetail());
+				startParagraph(word, font, startBase, size, detail.paragraph);
+			}
 			else if (!belongsToCurrentParagraph(startBase, size)) {
 				startParagraph(word, font, startBase, size, detail.paragraph);
 			} else{
@@ -91,6 +96,7 @@ public class PDFController {
 		}
 		oldFont=font;
 		oldy = y;		
+		oldSize = size;
 	}
 	
 
@@ -98,27 +104,26 @@ public class PDFController {
 		int x = (int) start.get(0);
 		int y = (int) start.get(1);
 		boolean btcp = y - oldy == 0 || -3 < x - oldX  &&  x - oldX < 10 && oldy - y < size*2;
-		if(newLine(start)) {		
+		if(newLine(y)) {		
 			oldX = x;
 		}
 		return btcp;
 	}
 	
-	private boolean newLine(Vector start){
-		int y = (int) start.get(1);
-		boolean changed = y != oldy;
-		return changed;
+	private boolean sameFont(String font, int size){
+		return font.equals(oldFont) && size == oldSize;
 	}
 
+	private boolean newLine(int y){
+		return y != oldy;
+	}
+
+	private void startParagraph(String word, String font, Vector start, int size, detail detail){
+		currentParagraph = new Paragraph(word, font, start, detail, size);
+		currentChapter.getParagraphs().add(currentParagraph);
+		
+	}
 	public ArrayList<Chapter> getChapter() {
 		return chapter;
-	}
-	
-	private void startParagraph(String word, String font, Vector start, int size, detail detail){
-		currentParagraph = new Paragraph(word, detail);
-		currentChapter.getParagraphs().add(currentParagraph);
-		currentChapter.getFonts().add(font+" "+size);
-		currentChapter.getPositions().add((int) start.get(0)+"  "+(int) start.get(1));
-		
 	}
 }
