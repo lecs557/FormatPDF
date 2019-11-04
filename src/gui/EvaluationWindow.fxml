@@ -1,0 +1,13 @@
+<?import javafx.scene.control.*?>
+	<?import javafx.scene.layout.*?>
+	
+
+<VBox stylesheets="@MainWindowStyle.css" alignment="top_center" fx:id="vbox" prefHeight="500.0" prefWidth="500.0" spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="windowCtl.EvaluationWindowController">
+ <children>
+	 	<TextField fx:id="sum"  maxWidth="300" editable="false"></TextField>
+		<HBox fx:id="hb" prefHeight="300.0" prefWidth="600" alignment="top_center"/>
+		<HBox alignment="BOTTOM_RIGHT">
+			<Button onAction="#onPressClose" text="Close" textAlignment="CENTER"  />
+		</HBox>
+	</children>
+</VBox>

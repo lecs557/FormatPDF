@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="vbox" prefHeight="500.0" prefWidth="500.0" spacing="10" stylesheets="@MainWindowStyle.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="windowCtl.AnalizeWindowController">
+	 <children>
+		<HBox prefHeight="400.0">
+			<VBox>
+				<TextArea fx:id="analizeText" minWidth="250.0" prefHeight="300.0" />
+			</VBox>
+			<VBox prefWidth="250.0">
+				<TextArea fx:id="analizeX" minWidth="250.0" prefHeight="300.0" />
+			</VBox>
+			<VBox prefWidth="250.0">
+				<TextArea fx:id="analizeFont" minWidth="250.0" prefHeight="300.0" />
+			</VBox>
+		</HBox>
+		<HBox alignment="BOTTOM_RIGHT">
+			<Button onAction="#onPressClose" text="Close" textAlignment="CENTER" />
+	    </HBox>	
+	</children>
+</VBox>
