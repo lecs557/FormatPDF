@@ -15,26 +15,26 @@ public class AnalizeController {
 	
 	private int counter = 0;
 	
-	public void analize(){
-	chapter = Main.getSession().getPDFController().getChapter();
-		
-		if (chapter.size()>=2){
-			for (int i=0; i<chapter.get(0).getParagraphs().size();i++){	
-				addAnalizeData(chapter.get(0), i);
-			}
-			chapter.remove(0);			
-		}
-		
-		if(counter==Main.getSession().getEnd()-1){
-			for(Chapter ch:chapter){
-				for (int i=0; i<ch.getParagraphs().size();i++){	{
-					addAnalizeData(ch, i);						
-					}
-				}
-			}
-		}
-		counter++;
-	}
+//	public void analize(){
+//	chapter = Main.getSession().getPDFController().getChapter();
+//
+//		if (chapter.size()>=2){
+//			for (int i=0; i<chapter.get(0).getParagraphs().size();i++){
+//				addAnalizeData(chapter.get(0), i);
+//			}
+//			chapter.remove(0);
+//		}
+//
+//		if(counter==Main.getSession().getEnd()-1){
+//			for(Chapter ch:chapter){
+//				for (int i=0; i<ch.getParagraphs().size();i++){	{
+//					addAnalizeData(ch, i);
+//					}
+//				}
+//			}
+//		}
+//		counter++;
+//	}
 	
 	private void addAnalizeData(Chapter chap, int i){
 		Paragraph paragraph = chap.getParagraphs().get(i);

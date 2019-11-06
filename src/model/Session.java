@@ -1,8 +1,8 @@
 package model;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
+import controller.StructureController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,24 +22,33 @@ public class Session {
 
 	public enum window {MainWindow,EvaluationWindow,AnalizeWindow};
 	private Stage[] stages = new Stage[3];
-	private AnalizeController analizeController;
 	private PDFController pdfController;
-	private TextFileController textFileController;
 	private int start, end;
-	private String destination;
+	private String destinationPath, filePath;
 	private PdfReader pdfReader;
 	
 	public Session() {}
-	
+
+	/**
+	 * sets the first stage
+	 * the other stages are null (look at "openWindow")
+	 * @param stage
+	 */
 	public void initialize(Stage stage){
 		this.stages[0] = stage;
+		pdfController = new PDFController();
 	}
-	
 
+	/**
+	 * creates new stage of the window if not exists
+	 * shows stored stage if exists
+	 * @param window
+	 * @throws IOException
+	 */
 	public void openWindow(window window) throws IOException {
 		if (stages[window.ordinal()] == null){
 			Stage stage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getResource("/gui/"+window.name()+".xml")); 
+			Parent root = FXMLLoader.load(getClass().getResource("/gui/"+window.name()+".fxml"));
 			Scene scene = new Scene(root);
 			stage.setTitle("PDF Filter");
 			stage.setScene(scene);
@@ -54,35 +63,15 @@ public class Session {
 	}
 	
 	public void closeWindow(window window) {
-		stages[window.ordinal()].hide();
-	}
-	
-	public int getStart() {
-		return start;
-	}
-
-	public void setStart(int start) {
-		this.start = start;
+		stages[window.ordinal()].close();
 	}
 
 	public PDFController getPDFController() {
 		return pdfController;
 	}
-
-	public TextFileController getTextFileController() {
-		return textFileController;
-	}
 	
 	public Stage getStage(window window){
 		return stages[window.ordinal()];
-	}
-
-	public PDFController getPdfController() {
-		return pdfController;
-	}
-
-	public void setPdfController(PDFController pdfController) {
-		this.pdfController = pdfController;
 	}
 
 	public PdfReader getPdfReader() {
@@ -93,36 +82,16 @@ public class Session {
 		this.pdfReader = pdfReader;
 	}
 
-	public void setAnalizeController(AnalizeController analizeController) {
-		this.analizeController = analizeController;
-	}
-
-	public void setTextFileController(TextFileController textFileController) {
-		this.textFileController = textFileController;
-	}
-
-	public AnalizeController getAnalizeController() {
-		return analizeController;
-	}
-
 	public String getDestination() {
-		return destination;
+		return destinationPath;
 	}
 
 	public void setDestination(String destination) {
-		this.destination = destination;
+		this.destinationPath = destination;
 	}
 
 	public void refreshStages() {
 		this.stages[1] = null;
 		this.stages[2] = null;
-	}
-
-	public int getEnd() {
-		return end;
-	}
-
-	public void setEnd(int end) {
-		this.end = end;
 	}
 }

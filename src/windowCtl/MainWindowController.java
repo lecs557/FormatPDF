@@ -3,6 +3,7 @@ package windowCtl;
 import java.io.File;
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
@@ -21,9 +22,8 @@ import controller.TextFileController;
 
 public class MainWindowController {
 	private Session session = Main.getSession();;
-	private TextFileController tfctrl;
-	private PDFController pdfctrl;
-	private AnalizeController analizectrl;
+	private PDFController pdfctrl = session.getPDFController();
+
 	
 	@FXML
 	private TextField tf_absolutePath, tf_pages, tf_pathDes ;
@@ -41,34 +41,34 @@ public class MainWindowController {
 	private int end;
 	
 	@FXML
+	/**
+	 * reads data from "mainWindow" and stores it in "Session"
+	 * reads pdf-file in second thread
+	 * sets progressBar's progress in third thread
+	 */
 	private void onPressOk() {
-		new Thread(){
-			public void run(){
-				try {
-					start = Integer.parseInt(tf_startPage.getText());
-					end = Integer.parseInt(tf_endPage.getText());
-					okBtn.setDisable(true);
-					setVariables();
-					new Thread(){
-						public void run(){		
-							while(i<=end){		
-								bar.setProgress((i-start)/(float) (end-start));
-							}
-						}
-					}.start();;
-					for (i = start; i <= end; i++) {
-						int page = i;
-						pdfctrl.readPDF(page);
-						tfctrl.writeDailytxt();
-						analizectrl.analize();
-					}	
-					analizeBtn.setDisable(false);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		start = Integer.parseInt(tf_startPage.getText());
+		end = Integer.parseInt(tf_endPage.getText());
+		session.refreshStages();
+		okBtn.setDisable(true);
+		readDataSendtoSession();
+		Platform.runLater(new Thread(() -> {
+			try {
+				new Thread(() -> {
+					while(i<=end){
+						bar.setProgress((i-start)/(float) (end-start));
+					}
+				}).start();;
+				for (i = start; i <= end; i++) {
+					int page = i;
+					pdfctrl.readPDF(page);
 				}
+				session.openWindow(window.AnalizeWindow);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		}.start();;
+		}));;
 	}
 	
 	@FXML
@@ -134,18 +134,8 @@ public class MainWindowController {
 	}
 	
 	
-	private void setVariables(){
-		session.refreshStages();
-		session.setStart(start);
-		session.setEnd(end);
+	private void readDataSendtoSession(){
 		session.setDestination(tf_pathDes.getText());
 		session.setPdfReader(reader);
-		tfctrl = new TextFileController();
-		session.setTextFileController(tfctrl);
-		analizectrl = new AnalizeController();
-		session.setAnalizeController(analizectrl);
-		pdfctrl = new PDFController();
-		session.setPdfController(pdfctrl);
-		
 	}
 }

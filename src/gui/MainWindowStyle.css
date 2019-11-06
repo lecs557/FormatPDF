@@ -1,9 +1,16 @@
 #vbox {
-	-fx-background-color: skyblue;
+	-fx-background-color: lightgreen;
 	-fx-padding: 15;
+}
+
+Label {
+	-fx-font-size:20;
+	-fx-font-family: cursive;
 	
 }
 
-.button {
-	-fx-min-width: 70px;
+Button {
+	-fx-pref-width: 110px;
+	-fx-background-radius: 40px;
+ 
 }
