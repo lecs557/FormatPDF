@@ -54,11 +54,11 @@ public class MainWindowController {
 		readDataSendtoSession();
 		Platform.runLater(new Thread(() -> {
 			try {
-				new Thread(() -> {
+				Platform.runLater(new Thread(() -> {
 					while(i<=end){
 						bar.setProgress((i-start)/(float) (end-start));
 					}
-				}).start();;
+				}));
 				for (i = start; i <= end; i++) {
 					int page = i;
 					pdfctrl.readPDF(page);

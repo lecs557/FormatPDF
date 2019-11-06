@@ -9,16 +9,7 @@ import model.Word;
 import java.util.ArrayList;
 
 public class StructureController {
-    private AnalizeController analizeController = new AnalizeController();
     private FormatController formatController = new FormatController();
-
-    public AnalizeController getAnalizeController() {
-        return analizeController;
-    }
-
-    public FormatController getFormatController() {
-        return formatController;
-    }
 
     private ArrayList<Chapter> book = new ArrayList<>();
     private Chapter currentChapter;
@@ -68,7 +59,10 @@ public class StructureController {
                  } else {
                      if (currentWord!=null)
                          words+="\n"+currentWord.getWord();
-                     currentWord = new Word(st_partWord,rinfo);
+                     if( !currentWord.devide())
+                        currentWord = new Word(st_partWord,rinfo);
+                     else
+                         currentWord.addToWord(st_part);
                  }
                  wordCompleted = false;
              }
@@ -140,5 +134,9 @@ public class StructureController {
 
     private void startWord(String st_part, TextRenderInfo rinfo) {
         currentWord = new Word(st_part,rinfo);
+    }
+
+    public FormatController getFormatController() {
+        return formatController;
     }
 }
