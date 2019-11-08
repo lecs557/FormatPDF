@@ -12,10 +12,11 @@ import javafx.scene.control.TextArea;
 public class AnalizeWindowController {
 	StructureController struc = Main.getSession().getPDFController().getStructureController();
 	@FXML
-	private TextArea analizeWords;
+	private TextArea analizeWords, analizePara;
 	
 	public void initialize() {
-		analizeWords.setText(struc.getWords());
+		analizeWords.setText(struc.getWords()); //TODO tab for every string
+        analizePara.setText(struc.getParagaphs());
 
 	}
 

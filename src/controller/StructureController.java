@@ -2,6 +2,7 @@ package controller;
 
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
 import com.itextpdf.text.pdf.parser.Vector;
+import com.sun.xml.internal.bind.v2.TODO;
 import model.Chapter;
 import model.Paragraph;
 import model.Word;
@@ -16,11 +17,13 @@ public class StructureController {
     private Paragraph currentParagraph;
     private Word currentWord;
 
-    private String words="";
+    private String words=""; //TODO string for every page
+    private String paragaphs="";
 
     private boolean wordCompleted = false;
 
     // oldies
+    private Word oldWord;
     private String oldFont;
     private int oldX;
     private int oldY;
@@ -45,6 +48,7 @@ public class StructureController {
 
         if (y < 570 && y > 52) {        // word should be noticed
 
+
              if (st_part.contains(" ") && !st_part.endsWith(" "))
              {  // more than one word
                  String old = st_part.split(" ",2)[0];
@@ -57,35 +61,40 @@ public class StructureController {
                  if (0>oldY - y && oldY - y > -10) {
                      currentWord.addToWord("<hoch>"+st_part+"</hoch>");
                  } else {
-                     if (currentWord!=null)
-                         words+="\n"+currentWord.getWord();
-                     if( !currentWord.devide())
-                        currentWord = new Word(st_partWord,rinfo);
-                     else
-                         currentWord.addToWord(st_part);
+                     if (currentWord!=null) { // first word, second line
+                         if (!currentWord.devide()) {
+                             toParagraph();
+                             words += "\n" + currentWord.get();
+                             System.out.println(currentWord.get());
+                             currentWord = new Word(st_partWord, rinfo);
+                             wordCompleted = true;
+                         }
+                         else {
+                             currentWord.addToWord(st_part);
+                             wordCompleted = false;
+                         }
+                     }else { // first word, first line
+                         currentWord = new Word(st_partWord, rinfo);
+                         wordCompleted = false;
+                     }
                  }
-                 wordCompleted = false;
              }
              else if( y == oldY)
              {  // the same line
-                 if (wordCompleted) {
-                     words+="\n"+currentWord.getWord();
-                     currentWord = new Word(st_part,rinfo);
-                     if(st_part.endsWith(" "))
-                         wordCompleted =true;
-                     else
-                         wordCompleted = false;
-                 }
-                 else if (st_part.endsWith(" ")) {
-                     currentWord.addToWord(st_part);
-                     wordCompleted = true;
-
+                if (st_part.endsWith(" ")) {
+                    currentWord.addToWord(st_partWord);
+                    toParagraph();
+                    words += "\n" + currentWord.get();
+                    currentWord = new Word("", rinfo);
+                    wordCompleted = true;
                  }else if(!st_part.contains(" ")) {
                      if (oldX <= x) { // correct
                          currentWord.addToWord(st_part,rinfo);
+                         System.out.println(currentWord.get());
                          wordCompleted = false;
                      } else { // incorrect
-                         words+="\n"+currentWord.getWord();
+                         toParagraph();
+                         words+="\n"+currentWord.get();
                          currentWord = new Word(st_part,rinfo);
                          wordCompleted = false;
                      }
@@ -98,15 +107,28 @@ public class StructureController {
         oldSize = size;
     }
 
-
-    private boolean belongsToCurrentParagraph(Vector start, int size) {
-        int x = (int) start.get(0);
-        int y = (int) start.get(1);
-        boolean btcp = y - oldY == 0 || -3 < x - oldX  &&  x - oldX < 10 && oldY - y < size*2;
-        if(newLine(y)) {
-            oldX = x;
+    private void toParagraph() {
+        if(currentParagraph==null) {
+            currentParagraph = new Paragraph(currentWord);
+        } else if(oldWord!=null){
+            if(newParagraph()) {
+                paragaphs+="\n"+currentParagraph.get();
+                currentParagraph = new Paragraph(currentWord);
+            } else {
+                currentParagraph.add(currentWord);
+            }
         }
-        return btcp;
+        oldWord = currentWord;
+    }
+
+
+    private boolean newParagraph() {
+        if ((oldWord.getY() - currentWord.getY()) > 15) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     private boolean sameFont(String font, int size){
@@ -122,21 +144,12 @@ public class StructureController {
         book.add(currentChapter);
     }
 
-    private void startParagraph(Word word, String font, Vector start, int size, Paragraph.detail detail){
-        currentParagraph = new Paragraph(word, font, start, detail, size);
-        if (book.size()<=0){
-            currentChapter = new Chapter();
-            book.add(currentChapter);
-        }
-        currentChapter.getParagraphs().add(currentParagraph);
-        currentWord = word;
-    }
-
-    private void startWord(String st_part, TextRenderInfo rinfo) {
-        currentWord = new Word(st_part,rinfo);
-    }
-
     public FormatController getFormatController() {
         return formatController;
+    }
+
+    public String getParagaphs() {
+        paragaphs+="\n"+currentParagraph.get();
+        return paragaphs;
     }
 }

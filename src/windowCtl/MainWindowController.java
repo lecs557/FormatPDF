@@ -52,23 +52,29 @@ public class MainWindowController {
 		session.refreshStages();
 		okBtn.setDisable(true);
 		readDataSendtoSession();
-		Platform.runLater(new Thread(() -> {
+		new Thread(() -> {
 			try {
-				Platform.runLater(new Thread(() -> {
+				new Thread(() -> {
 					while(i<=end){
 						bar.setProgress((i-start)/(float) (end-start));
 					}
-				}));
+				} ).start();
 				for (i = start; i <= end; i++) {
 					int page = i;
 					pdfctrl.readPDF(page);
 				}
-				session.openWindow(window.AnalizeWindow);
+				Platform.runLater(new Thread(()-> {
+                    try {
+                        session.openWindow(window.AnalizeWindow);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }) ) ;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}));;
+		}).start();
 	}
 	
 	@FXML

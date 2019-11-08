@@ -6,7 +6,8 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="windowCtl.AnalizeWindowController">
    <children>
-      <TextArea fx:id="analizeWords" layoutX="14.0" layoutY="14.0" prefHeight="294.0" prefWidth="572.0" />
+      <TextArea fx:id="analizeWords" layoutX="14.0" layoutY="14.0" prefHeight="333.0" prefWidth="281.0" />
       <Button layoutX="300.0" layoutY="361.0" mnemonicParsing="false" onAction="#onPressClose" text="Button" />
+      <TextArea fx:id="analizePara" layoutX="301.0" layoutY="14.0" prefHeight="333.0" prefWidth="274.0" />
    </children>
 </Pane>

@@ -5,19 +5,16 @@ import com.itextpdf.text.pdf.parser.Vector;
 import java.util.ArrayList;
 
 public class Paragraph {
-	
-	public enum detail {title, heading, bold, paragraph};
+
+    public enum detail {title, heading, bold, paragraph};
 	private ArrayList<Word> paragraph = new ArrayList<Word>();
 	private String font;
 	private String position;
 	private int ordDetail;
 	
 	
-	public Paragraph(Word word, String font, Vector pos, detail detail, int size) {
+	public Paragraph(Word word) {
 		this.paragraph.add(word);
-		this.font = font+" "+size;
-		this.position = (int)pos.get(0)+" "+(int)pos.get(1);
-		this.ordDetail = detail.ordinal();
 	}
 	
 	public void add (Word word){
@@ -36,6 +33,15 @@ public class Paragraph {
 	public String getPosition() {
 		return position;
 	}
+
+    public String get() {
+	    String words="";
+	    for (Word w:paragraph){
+	        words+=w.getWord()+" ";
+        }
+	    return words;
+
+    }
 
 
 }
