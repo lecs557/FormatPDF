@@ -5,9 +5,11 @@ import controller.AnalizeController;
 import controller.StructureController;
 import javafx.event.ActionEvent;
 import model.Main;
+import model.Paragraph;
 import model.Session.window;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
+import model.Word;
 
 public class AnalizeWindowController {
 	StructureController struc = Main.getSession().getPDFController().getStructureController();
@@ -15,8 +17,14 @@ public class AnalizeWindowController {
 	private TextArea analizeWords, analizePara;
 	
 	public void initialize() {
-		analizeWords.setText(struc.getWords()); //TODO tab for every string
         analizePara.setText(struc.getParagaphs());
+
+        for(Paragraph p:struc.getChapter().getParagraphs()){
+        	analizeWords.appendText("\n");
+        	for (Word w:p.getParagraph()){
+				analizeWords.appendText(w.get()+"\n");
+			}
+		}
 
 	}
 

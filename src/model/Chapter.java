@@ -11,8 +11,13 @@ public class Chapter {
 	
 	private ArrayList<Paragraph> paragraphs;
 		
-	public Chapter() {
+	public Chapter(Paragraph paragraph) {
 		paragraphs = new ArrayList<Paragraph>();
+		paragraphs.add(paragraph);
+	}
+
+	public void add(Paragraph paragraph){
+		paragraphs.add(paragraph);
 	}
 	
 	public ArrayList<Paragraph> getParagraphs(){
