@@ -35,7 +35,7 @@ public class Main extends Application {
 	 * Applicationthread
 	 * @param parameters
 	 */
-	public static void main(String[] parameters) {       
+	public static void main(String[] parameters) {
 		launch(parameters);   
 	}
 

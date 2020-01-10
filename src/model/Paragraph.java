@@ -24,12 +24,15 @@ public class Paragraph {
 	public ArrayList<Word> getParagraph() {
 		return paragraph;
 	}
+
 	public int getOrdDetail() {
 		return ordDetail;
 	}
+
 	public String getFont() {
 		return font;
 	}
+
 	public String getPosition() {
 		return position;
 	}

@@ -13,7 +13,7 @@ public class FontFilter extends RenderFilter {
 	@Override
 	public boolean allowText(TextRenderInfo tri) {
 		
-		Main.getSession().getPDFController().getStructureController().structureText(tri.getText(),tri);
+		Main.getSession().getPDFController().getStructureController().makeword(tri.getText(),tri);
 		
 		return true;
 		

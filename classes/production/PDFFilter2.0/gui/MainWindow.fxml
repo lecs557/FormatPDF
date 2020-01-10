@@ -21,9 +21,9 @@
 	    </HBox>   
 	    <HBox spacing="10">
 	    	<Label prefHeight="30.0" text="Start" textAlignment="LEFT" />
-	    	<TextField fx:id="tf_startPage" disable="true" onKeyReleased="#validatePages" prefWidth="50" text="1" />
+	    	<TextField fx:id="tf_startPage" disable="true" onKeyReleased="#validatePages" prefWidth="50" text="3" />
 	    	<Label prefHeight="30.0" text="End" textAlignment="LEFT" />
-	    	<TextField fx:id="tf_endPage" disable="true" onKeyReleased="#validatePages" prefWidth="50" text="20" />
+	    	<TextField fx:id="tf_endPage" disable="true" onKeyReleased="#validatePages" prefWidth="50" text="5" />
 	    </HBox>   
 	    <HBox spacing="10">
 	    	<Label prefHeight="30.0" text="Select destination" textAlignment="LEFT" />

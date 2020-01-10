@@ -2,19 +2,17 @@ package controller;
 
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
 import com.itextpdf.text.pdf.parser.Vector;
-import com.sun.xml.internal.bind.v2.TODO;
 import model.Chapter;
 import model.Paragraph;
 import model.Word;
 
+import java.awt.print.Book;
 import java.util.ArrayList;
 
 public class StructureController {
     private FormatController formatController = new FormatController();
 
-    private ArrayList<Chapter> book = new ArrayList<>();
-    private ArrayList<Paragraph> chapter = new ArrayList<>();
-    private ArrayList<Word> paragraph = new ArrayList<>();
+    private ArrayList<Chapter> fmnHeft = new ArrayList<>();
 
     private Chapter currentChapter;
     private Paragraph currentParagraph;
@@ -23,28 +21,26 @@ public class StructureController {
     private String words=""; //TODO string for every page
     private String paragaphs="";
 
-    private boolean wordCompleted = false;
-
     // oldies
-    private Word oldWord;
-    private String oldFont;
-    private int oldX;
+    private Word lastCompletedWord;
     private int oldY;
-    private int oldSize;
+
+    // current letter
+    int x, y, size;
 
 
     /**
      * Gets TextRenderInfo and puts it into words -> paragraphs -> chapter -> book
      * @param rinfo got from "Fontfilter", can contain a random number of charakters
      */
-    public void structureText(String st_part, TextRenderInfo rinfo) {
+    public void makeword(String st_part, TextRenderInfo rinfo) {
         String st_partWord = st_part;
         String font = rinfo.getFont().getPostscriptFontName();
         Vector startBase = rinfo.getBaseline().getStartPoint();
         Vector startAscent = rinfo.getAscentLine().getStartPoint();
-        int x = (int) startBase.get(0);
-        int y = (int) startBase.get(1);
-        int size = (int) (startAscent.get(1)-startBase.get(1));
+         x = (int) startBase.get(0);
+         y = (int) startBase.get(1);
+        size = (int) (startAscent.get(1)-startBase.get(1));
 
         //word is in the range which should be noticed
         if (y < 560 && y > 52) {
@@ -54,8 +50,8 @@ public class StructureController {
              {
                  String old = st_part.split(" ",2)[0];
                  String nw = st_part.split(" ",2)[1];
-                 structureText(old+" ", rinfo);
-                 structureText(nw, rinfo);
+                 makeword(old+" ", rinfo);
+                 makeword(nw, rinfo);
              }
              // word starts new line
              if (y != oldY)
@@ -65,21 +61,19 @@ public class StructureController {
                  } else {
                      if (currentWord!=null) {
                          if (!currentWord.devide()) {
-                             startingNewLine();
-                             words += "\n" + currentWord.get();
+                             lastCompletedWord = currentWord;
                              currentWord = new Word(st_partWord, rinfo);
-                             wordCompleted = true;
+                             processWord();
                          }
                          else {
                              currentWord.addToWord(st_part);
-                             wordCompleted = false;
                          }
                      }else {
                          currentWord = new Word(st_partWord, rinfo);
                          currentParagraph = new Paragraph(currentWord);
                          currentChapter = new Chapter(currentParagraph);
-                         wordCompleted = false;
-                     }
+                         fmnHeft.add(currentChapter);
+                 }
                  }
              }
              // in the same line
@@ -87,52 +81,41 @@ public class StructureController {
              {
                 if (st_part.endsWith(" ")) {
                     currentWord.addToWord(st_partWord);
-                    currentParagraph.add(currentWord);
-                    words += "\n" + currentWord.get();
+                    lastCompletedWord = currentWord;
                     currentWord = new Word("", rinfo);
-                    wordCompleted = true;
+                    processWord();
                  }else if(!st_part.contains(" ")) {
-                     if (oldX <= x) { // correct
-                         currentWord.addToWord(st_part,rinfo);
-                         wordCompleted = false;
-                     } else { // incorrect
-                         currentParagraph.add(currentWord);
-                         words+="\nFEHLER"+currentWord.get();
-                         currentWord = new Word(st_part,rinfo);
-                         wordCompleted = false;
-                     }
+                     currentWord.addToWord(st_part,rinfo);
                  }
              }
          }
-        oldWord = currentWord;
-        oldFont = font;
-        oldX = x;
         oldY = y;
-        oldSize = size;
+    }
+
+    private void processWord(){
+        if (false) {
+            currentParagraph = new Paragraph(currentWord);
+            currentChapter = new Chapter(currentParagraph);
+            fmnHeft.add(currentChapter);
+        }
+        else if(lastCompletedWord.getY() - y > 15){
+            currentParagraph = new Paragraph(currentWord);
+            currentChapter.add(currentParagraph);
+        } else {
+            currentParagraph.add(currentWord);
+        }
+
+
     }
 
     private void startingNewLine() {
         if((oldY - currentWord.getY()) > 15) {
             currentParagraph = new Paragraph(currentWord);
             currentChapter.add(currentParagraph);
-        } else if ( oldWord.getFont().ordinal() != currentWord.getFont().ordinal()){
+        } else if ( lastCompletedWord.getFont().ordinal() != currentWord.getFont().ordinal()){
             currentParagraph = new Paragraph(currentWord);
             currentChapter.add(currentParagraph);
         }
-    }
-
-
-    private boolean newParagraph() {
-        if ((oldWord.getY() - currentWord.getY()) > 15) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    private boolean sameFont(String font, int size){
-        return font.equals(oldFont) && size == oldSize;
     }
 
     public FormatController getFormatController() {
@@ -148,7 +131,7 @@ public class StructureController {
         return words;
     }
 
-    public Chapter getChapter() {
-        return currentChapter;
+    public ArrayList<Chapter> getHeft() {
+        return fmnHeft;
     }
 }

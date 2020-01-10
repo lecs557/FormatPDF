@@ -4,6 +4,7 @@ package windowCtl;
 import controller.AnalizeController;
 import controller.StructureController;
 import javafx.event.ActionEvent;
+import model.Chapter;
 import model.Main;
 import model.Paragraph;
 import model.Session.window;
@@ -17,13 +18,20 @@ public class AnalizeWindowController {
 	private TextArea analizeWords, analizePara;
 	
 	public void initialize() {
-        analizePara.setText(struc.getParagaphs());
+        for(Chapter c:struc.getHeft()){
 
-        for(Paragraph p:struc.getChapter().getParagraphs()){
-        	analizeWords.appendText("\n");
-        	for (Word w:p.getParagraph()){
-				analizeWords.appendText(w.get()+"\n");
-			}
+
+        	for(Paragraph p:c.getParagraphs()){
+				analizePara.appendText(p.get()+"\n");
+				for (Word w:p.getParagraph()){
+					analizeWords.appendText(w.get()+"\n");
+				}
+				analizeWords.appendText("\nNEUER PARAGRAPH\n");
+
+
+        }
+
+
 		}
 
 	}
