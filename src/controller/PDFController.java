@@ -23,9 +23,7 @@ public class PDFController {
 	 * @param page of the PDF-File
 	 */
 	public void readPDF(int page) throws IOException {
-
-		// TODO objects of strc = null or from prev page   maybe structureController.setCurrents()
-
+		structureController.setCurrents(structureController.getHeft());
 		RenderFilter info = new FontFilter();
 		TextExtractionStrategy strategy = new FilteredTextRenderListener(
 				new LocationTextExtractionStrategy(), info);

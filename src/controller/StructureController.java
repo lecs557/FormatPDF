@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class StructureController {
     private FormatController formatController = new FormatController();
 
-    private ArrayList<Chapter> fmnHeft = new ArrayList<>();
+    private ArrayList<Chapter> fmnHeft;
 
     private Chapter currentChapter;
     private Paragraph currentParagraph;
@@ -58,14 +58,14 @@ public class StructureController {
                      if (currentWord!=null) {
                          if (!currentWord.devide()) {
                              wordToProcess = currentWord;
-                             processWord();
                              currentWord = new Word(st_partWord, rinfo);
+                             processWord();
                          }
                          else {
                              currentWord.addToWord(st_part);
                          }
                      }else {
-                         currentWord =  new Word(st_partWord, rinfo);
+                         currentWord = new Word(st_partWord, rinfo);
                     }
                  }
              }
@@ -75,8 +75,8 @@ public class StructureController {
                 if (st_part.endsWith(" ")) {
                     currentWord.addToWord(st_partWord);
                     wordToProcess = currentWord;
-                    processWord();
                     currentWord = new Word("", rinfo);
+                    processWord();
                  }else if(!st_part.contains(" ")) {
                      currentWord.addToWord(st_part,rinfo);
                  }
@@ -86,11 +86,8 @@ public class StructureController {
     }
 
     private void processWord(){
-
-        //TODO look at PDFctel (no need to initialize)
-
         if (wordToProcess.getFont().ordinal() ==  1) {
-            if(currentChapter==null || !currentChapter.getParagraphs().isEmpty()){
+            if(!currentChapter.getParagraphs().isEmpty()){
                 currentChapter = new Chapter();
                 currentChapter.addToTitle(wordToProcess);
                 fmnHeft.add(currentChapter);
@@ -98,13 +95,14 @@ public class StructureController {
                 currentChapter.addToTitle(wordToProcess);
             }
         }
-        else if(currentChapter==null){
-            currentChapter = new Chapter();
-            fmnHeft.add(currentChapter);
-        }
-        else if(wordToProcess.getY() - y <-15 || wordToProcess.getY() - y > 15 || currentParagraph==null){                 // maybe create new para after title
-            currentParagraph = new Paragraph(wordToProcess);
-            currentChapter.add(currentParagraph);
+        else if(wordToProcess.getY() - y <-15 || wordToProcess.getY() - y > 15 || currentParagraph==null){
+            if(currentParagraph!=null){
+                currentParagraph.add(wordToProcess);
+                currentParagraph = null;
+            } else{
+                currentParagraph = new Paragraph(wordToProcess);
+                currentChapter.add(currentParagraph);
+            }
         }
         else {
             currentParagraph.add(wordToProcess);
@@ -119,5 +117,14 @@ public class StructureController {
 
     public ArrayList<Chapter> getHeft() {
         return fmnHeft;
+    }
+
+    public void setCurrents(ArrayList<Chapter> heft){
+        if (heft==null){
+            fmnHeft = new ArrayList<Chapter>();
+            currentChapter = new Chapter();
+            fmnHeft.add(currentChapter);
+        }
+
     }
 }
