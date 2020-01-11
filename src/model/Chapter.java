@@ -8,12 +8,13 @@ import java.util.ArrayList;
  * @author Marcel
  */
 public class Chapter {
-	
+
+	private ArrayList<Word> title;
 	private ArrayList<Paragraph> paragraphs;
 		
-	public Chapter(Paragraph paragraph) {
+	public Chapter() {
+		title = new ArrayList<>();
 		paragraphs = new ArrayList<Paragraph>();
-		paragraphs.add(paragraph);
 	}
 
 	public void add(Paragraph paragraph){
@@ -23,5 +24,12 @@ public class Chapter {
 	public ArrayList<Paragraph> getParagraphs(){
 		return paragraphs;
 	}
-	
+
+	public void addToTitle(Word word){
+		title.add(word);
+	}
+
+	public ArrayList<Word> getTitle() {
+		return title;
+	}
 }

@@ -1,23 +1,11 @@
 package controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import model.Chapter;
+import com.itextpdf.text.pdf.parser.*;
 import model.FontFilter;
 import model.Main;
-import model.Paragraph;
-import model.Paragraph.detail;
 import model.Session;
 
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.parser.FilteredTextRenderListener;
-import com.itextpdf.text.pdf.parser.LocationTextExtractionStrategy;
-import com.itextpdf.text.pdf.parser.PdfTextExtractor;
-import com.itextpdf.text.pdf.parser.RenderFilter;
-import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
-import com.itextpdf.text.pdf.parser.TextRenderInfo;
-import com.itextpdf.text.pdf.parser.Vector;
+import java.io.IOException;
 
 /**
  * A handler which undertakes tasks which have to do the
@@ -35,6 +23,9 @@ public class PDFController {
 	 * @param page of the PDF-File
 	 */
 	public void readPDF(int page) throws IOException {
+
+		// TODO objects of strc = null or from prev page   maybe structureController.setCurrents()
+
 		RenderFilter info = new FontFilter();
 		TextExtractionStrategy strategy = new FilteredTextRenderListener(
 				new LocationTextExtractionStrategy(), info);

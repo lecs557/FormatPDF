@@ -60,21 +60,21 @@ public class TextFileController {
 //		counter++;
 //	}
 	
-	private void write(Chapter chap, int i) throws IOException{
-		Paragraph paragraph = chap.getParagraphs().get(i);
-		switch (paragraph.getOrdDetail()){
-		case 0:
-			fw.append("[{product_id:2,number:"+counter+",title:"+paragraph.getParagraph()+",text:\r\n");
-			break;
-		case 1:
-			fw.append("<h1>"+paragraph.getParagraph()+"</h1>\r\n");
-			break;
-		case 2:
-			fw.append("<b>"+paragraph.getParagraph()+"</b>");
-			break;
-		case 3:
-			fw.append("<p style=\"margin-left:0cm; margin-right:0cm\">"+paragraph.getParagraph()+"</p>\r\n");
-			break;			
-		}
-	}
+//	private void write(Chapter chap, int i) throws IOException{
+//		Paragraph paragraph = chap.getParagraphs().get(i);
+//		switch (paragraph.getOrdDetail()){
+//		case 0:
+//			fw.append("[{product_id:2,number:"+counter+",title:"+paragraph.getParagraph()+",text:\r\n");
+//			break;
+//		case 1:
+//			fw.append("<h1>"+paragraph.getParagraph()+"</h1>\r\n");
+//			break;
+//		case 2:
+//			fw.append("<b>"+paragraph.getParagraph()+"</b>");
+//			break;
+//		case 3:
+//			fw.append("<p style=\"margin-left:0cm; margin-right:0cm\">"+paragraph.getParagraph()+"</p>\r\n");
+//			break;
+//		}
+//	}
 }

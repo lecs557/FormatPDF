@@ -36,39 +36,39 @@ public class AnalizeController {
 //		counter++;
 //	}
 	
-	private void addAnalizeData(Chapter chap, int i){
-		Paragraph paragraph = chap.getParagraphs().get(i);
-		switch (paragraph.getOrdDetail()){
-		case 0:
-			analizeText.add("||||"+paragraph.getParagraph()+"||||\n");
-			analizeFont.add("||||"+paragraph.getFont()+"|||| \n");
-			analizeX.add("||||"+paragraph.getPosition()+"||||  \n");
-			break;
-		case 1:
-			analizeText.add("----"+paragraph.getParagraph()+"\n");
-			analizeFont.add("----"+paragraph.getFont()+" \n");
-			analizeX.add("----"+paragraph.getPosition()+"  \n");
-			break;
-		case 2:
-			analizeText.add("->"+paragraph.getParagraph()+"<-\n");
-			analizeFont.add("->"+paragraph.getFont()+"<- \n");
-			analizeX.add("->"+paragraph.getPosition()+"<-  \n");		
-			break;
-		case 3:
-			analizeText.add(""+paragraph.getParagraph()+"\n");
-			analizeFont.add(""+paragraph.getFont()+" \n");
-			analizeX.add(""+paragraph.getPosition()+"  \n");
-			break;			
-		}
-	}
-		
-	public ArrayList<String> getAnalizeFont() {
-		return analizeFont;
-	}
-	public ArrayList<String> getAnalizeText() {
-		return analizeText;
-	}
-	public ArrayList<String> getAnalizeX() {
-		return analizeX;
-	}
+//	private void addAnalizeData(Chapter chap, int i){
+//		Paragraph paragraph = chap.getParagraphs().get(i);
+//		switch (paragraph.getOrdDetail()){
+//		case 0:
+//			analizeText.add("||||"+paragraph.getParagraph()+"||||\n");
+//			analizeFont.add("||||"+paragraph.getFont()+"|||| \n");
+//			analizeX.add("||||"+paragraph.getPosition()+"||||  \n");
+//			break;
+//		case 1:
+//			analizeText.add("----"+paragraph.getParagraph()+"\n");
+//			analizeFont.add("----"+paragraph.getFont()+" \n");
+//			analizeX.add("----"+paragraph.getPosition()+"  \n");
+//			break;
+//		case 2:
+//			analizeText.add("->"+paragraph.getParagraph()+"<-\n");
+//			analizeFont.add("->"+paragraph.getFont()+"<- \n");
+//			analizeX.add("->"+paragraph.getPosition()+"<-  \n");
+//			break;
+//		case 3:
+//			analizeText.add(""+paragraph.getParagraph()+"\n");
+//			analizeFont.add(""+paragraph.getFont()+" \n");
+//			analizeX.add(""+paragraph.getPosition()+"  \n");
+//			break;
+//		}
+//	}
+//
+//	public ArrayList<String> getAnalizeFont() {
+//		return analizeFont;
+//	}
+//	public ArrayList<String> getAnalizeText() {
+//		return analizeText;
+//	}
+//	public ArrayList<String> getAnalizeX() {
+//		return analizeX;
+//	}
 }

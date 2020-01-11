@@ -57,7 +57,7 @@ public class Word {
         return size;
     }
 
-   public String getWord() {
+   public String getString() {
         return word;
     }
 

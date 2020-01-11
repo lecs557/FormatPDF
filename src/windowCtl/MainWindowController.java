@@ -65,9 +65,9 @@ public class MainWindowController {
 				}
 				Platform.runLater(new Thread(()-> {
                     try {
-                        session.openWindow(window.AnalizeWindow);
                         analizeBtn.setDisable(false);
                         okBtn.setDisable(false);
+                        session.openWindow(window.AnalizeWindow);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -6,7 +6,6 @@ import model.Chapter;
 import model.Paragraph;
 import model.Word;
 
-import java.awt.print.Book;
 import java.util.ArrayList;
 
 public class StructureController {
@@ -18,11 +17,8 @@ public class StructureController {
     private Paragraph currentParagraph;
     private Word currentWord;
 
-    private String words=""; //TODO string for every page
-    private String paragaphs="";
-
     // oldies
-    private Word lastCompletedWord;
+    private Word wordToProcess;
     private int oldY;
 
     // current letter
@@ -61,19 +57,16 @@ public class StructureController {
                  } else {
                      if (currentWord!=null) {
                          if (!currentWord.devide()) {
-                             lastCompletedWord = currentWord;
-                             currentWord = new Word(st_partWord, rinfo);
+                             wordToProcess = currentWord;
                              processWord();
+                             currentWord = new Word(st_partWord, rinfo);
                          }
                          else {
                              currentWord.addToWord(st_part);
                          }
                      }else {
-                         currentWord = new Word(st_partWord, rinfo);
-                         currentParagraph = new Paragraph(currentWord);
-                         currentChapter = new Chapter(currentParagraph);
-                         fmnHeft.add(currentChapter);
-                 }
+                         currentWord =  new Word(st_partWord, rinfo);
+                    }
                  }
              }
              // in the same line
@@ -81,9 +74,9 @@ public class StructureController {
              {
                 if (st_part.endsWith(" ")) {
                     currentWord.addToWord(st_partWord);
-                    lastCompletedWord = currentWord;
-                    currentWord = new Word("", rinfo);
+                    wordToProcess = currentWord;
                     processWord();
+                    currentWord = new Word("", rinfo);
                  }else if(!st_part.contains(" ")) {
                      currentWord.addToWord(st_part,rinfo);
                  }
@@ -93,42 +86,35 @@ public class StructureController {
     }
 
     private void processWord(){
-        if (false) {
-            currentParagraph = new Paragraph(currentWord);
-            currentChapter = new Chapter(currentParagraph);
+
+        //TODO look at PDFctel (no need to initialize)
+
+        if (wordToProcess.getFont().ordinal() ==  1) {
+            if(currentChapter==null || !currentChapter.getParagraphs().isEmpty()){
+                currentChapter = new Chapter();
+                currentChapter.addToTitle(wordToProcess);
+                fmnHeft.add(currentChapter);
+            }else {
+                currentChapter.addToTitle(wordToProcess);
+            }
+        }
+        else if(currentChapter==null){
+            currentChapter = new Chapter();
             fmnHeft.add(currentChapter);
         }
-        else if(lastCompletedWord.getY() - y > 15){
-            currentParagraph = new Paragraph(currentWord);
+        else if(wordToProcess.getY() - y <-15 || wordToProcess.getY() - y > 15 || currentParagraph==null){                 // maybe create new para after title
+            currentParagraph = new Paragraph(wordToProcess);
             currentChapter.add(currentParagraph);
-        } else {
-            currentParagraph.add(currentWord);
+        }
+        else {
+            currentParagraph.add(wordToProcess);
         }
 
 
-    }
-
-    private void startingNewLine() {
-        if((oldY - currentWord.getY()) > 15) {
-            currentParagraph = new Paragraph(currentWord);
-            currentChapter.add(currentParagraph);
-        } else if ( lastCompletedWord.getFont().ordinal() != currentWord.getFont().ordinal()){
-            currentParagraph = new Paragraph(currentWord);
-            currentChapter.add(currentParagraph);
-        }
     }
 
     public FormatController getFormatController() {
         return formatController;
-    }
-
-    public String getParagaphs() {
-        paragaphs+="\n"+currentParagraph.get();
-        return paragaphs;
-    }
-
-    public String getWords() {
-        return words;
     }
 
     public ArrayList<Chapter> getHeft() {
