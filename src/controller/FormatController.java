@@ -9,7 +9,7 @@ public class FormatController {
             return format.bolditalic;
         else if(font.contains("-It"))
             return format.italic;
-        else if(font.contains("-Bold") && size>7)
+        else if(font.contains("-Bold") && size>12)
             return format.heading;
         else if(font.contains("-Bold"))
             return format.bold;

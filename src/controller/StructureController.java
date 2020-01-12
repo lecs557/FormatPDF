@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class StructureController {
     private FormatController formatController = new FormatController();
+    private HTMLController htmlController= new HTMLController();
 
     private ArrayList<Chapter> fmnHeft;
 
@@ -73,7 +74,7 @@ public class StructureController {
              else if( y == oldY)
              {
                 if (st_part.endsWith(" ")) {
-                    currentWord.addToWord(st_partWord);
+                    currentWord.addToWord(st_partWord.trim());
                     wordToProcess = currentWord;
                     currentWord = new Word("", rinfo);
                     processWord();
@@ -86,26 +87,34 @@ public class StructureController {
     }
 
     private void processWord(){
-        if (wordToProcess.getFont().ordinal() ==  1) {
-            if(!currentChapter.getParagraphs().isEmpty()){
-                currentChapter = new Chapter();
-                currentChapter.addToTitle(wordToProcess);
-                fmnHeft.add(currentChapter);
-            }else {
-                currentChapter.addToTitle(wordToProcess);
+        if(!wordToProcess.getString().isEmpty()){
+
+            if (wordToProcess.getFont().ordinal() ==  1) {
+                if(!currentChapter.getParagraphList().isEmpty()){
+                    currentParagraph=null;
+                    currentChapter = new Chapter();
+                    currentChapter.addToTitle(wordToProcess);
+                    fmnHeft.add(currentChapter);
+                }else {
+                    currentChapter.addToTitle(wordToProcess);
+                }
             }
-        }
-        else if(wordToProcess.getY() - y <-15 || wordToProcess.getY() - y > 15 || currentParagraph==null){
-            if(currentParagraph!=null){
-                currentParagraph.add(wordToProcess);
-                currentParagraph = null;
-            } else{
+            else if(wordToProcess.getY() - y <-15 || wordToProcess.getY() - y > 15 || currentParagraph==null){
+                if(currentParagraph!=null){
+                    currentParagraph.add(wordToProcess);
+                    currentParagraph = null;
+                } else{
+                    currentParagraph = new Paragraph(wordToProcess);
+                    currentChapter.add(currentParagraph);
+                }
+            }
+            else if(currentParagraph.getFont().ordinal()!=5 && currentParagraph.getFont()!=wordToProcess.getFont()){
                 currentParagraph = new Paragraph(wordToProcess);
                 currentChapter.add(currentParagraph);
             }
-        }
-        else {
-            currentParagraph.add(wordToProcess);
+            else {
+                currentParagraph.add(wordToProcess);
+            }
         }
 
 
@@ -117,6 +126,10 @@ public class StructureController {
 
     public ArrayList<Chapter> getHeft() {
         return fmnHeft;
+    }
+
+    public HTMLController getHtmlController() {
+        return htmlController;
     }
 
     public void setCurrents(ArrayList<Chapter> heft){

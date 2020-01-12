@@ -2,7 +2,6 @@ package model;
 
 import java.io.IOException;
 
-import controller.StructureController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,9 +9,7 @@ import javafx.stage.Stage;
 
 import com.itextpdf.text.pdf.PdfReader;
 
-import controller.AnalizeController;
 import controller.PDFController;
-import controller.TextFileController;
 
 /**
  * Class contains general variables and methods
@@ -20,10 +17,9 @@ import controller.TextFileController;
  */
 public class Session {
 
-	public enum window {MainWindow,EvaluationWindow,AnalizeWindow};
-	private Stage[] stages = new Stage[3];
+	public enum window {MainWindow,ResultWindow};
+	private Stage[] stages = new Stage[2];
 	private PDFController pdfController;
-	private int start, end;
 	private String destinationPath, filePath;
 	private PdfReader pdfReader;
 	
@@ -92,6 +88,5 @@ public class Session {
 
 	public void refreshStages() {
 		this.stages[1] = null;
-		this.stages[2] = null;
 	}
 }

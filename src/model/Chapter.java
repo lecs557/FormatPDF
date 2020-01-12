@@ -21,7 +21,7 @@ public class Chapter {
 		paragraphs.add(paragraph);
 	}
 	
-	public ArrayList<Paragraph> getParagraphs(){
+	public ArrayList<Paragraph> getParagraphList(){
 		return paragraphs;
 	}
 
@@ -29,7 +29,7 @@ public class Chapter {
 		title.add(word);
 	}
 
-	public ArrayList<Word> getTitle() {
+	public ArrayList<Word> getTitleList() {
 		return title;
 	}
 }

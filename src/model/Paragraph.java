@@ -20,11 +20,12 @@ public class Paragraph {
 		this.paragraph.add(word);
 	}
 
-	public ArrayList<Word> getParagraph() {
+	public ArrayList<Word> getWordList() {
 		return paragraph;
 	}
 
 	public FormatController.format getFont() {
 		return font;
 	}
+
 }

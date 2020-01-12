@@ -16,9 +16,7 @@ import model.Session.window;
 
 import com.itextpdf.text.pdf.PdfReader;
 
-import controller.AnalizeController;
 import controller.PDFController;
-import controller.TextFileController;
 
 public class MainWindowController {
 	private Session session = Main.getSession();;
@@ -67,7 +65,7 @@ public class MainWindowController {
                     try {
                         analizeBtn.setDisable(false);
                         okBtn.setDisable(false);
-                        session.openWindow(window.AnalizeWindow);
+                        session.openWindow(window.ResultWindow);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -81,7 +79,7 @@ public class MainWindowController {
 	
 	@FXML
 	private void onPressAnalize() throws IOException{
-		session.openWindow(window.AnalizeWindow);		
+		session.openWindow(window.ResultWindow);
 	}
 
 	@FXML

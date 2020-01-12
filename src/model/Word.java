@@ -29,10 +29,7 @@ public class Word {
         word+=partWord;
     }
 
-    public String get(){
-        if (word.isEmpty()){
-            return "------------------------------------";
-        }
+    public String getDetilString(){
         return word +" - "+font.name()+" - "+x+" - "+y+" - "+size;
     }
 
