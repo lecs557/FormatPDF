@@ -18,7 +18,7 @@ public class Word {
         x = (int) startBase.get(0);
         y = (int) startBase.get(1);
         size = (int) (startAscent.get(1)-startBase.get(1));
-        font = form.formatWord(tri.getFont().getPostscriptFontName(), size);
+        font = form.formatWord(tri.getFont().getPostscriptFontName(), size, word.length()>2);
     }
 
     public void addToWord(String partWord, TextRenderInfo tri) {
@@ -29,7 +29,7 @@ public class Word {
         word+=partWord;
     }
 
-    public String getDetilString(){
+    public String getDetialString(){
         return word +" - "+font.name()+" - "+x+" - "+y+" - "+size;
     }
 

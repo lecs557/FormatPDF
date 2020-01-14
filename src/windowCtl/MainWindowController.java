@@ -20,7 +20,7 @@ import controller.PDFController;
 
 public class MainWindowController {
 	private Session session = Main.getSession();;
-	private PDFController pdfctrl = session.getPDFController();
+	private PDFController pdfctrl;
 
 	
 	@FXML
@@ -48,6 +48,7 @@ public class MainWindowController {
 		start = Integer.parseInt(tf_startPage.getText());
 		end = Integer.parseInt(tf_endPage.getText());
 		session.refreshStages();
+        pdfctrl = session.getPDFController();
 		okBtn.setDisable(true);
 		readDataSendtoSession();
 		new Thread(() -> {

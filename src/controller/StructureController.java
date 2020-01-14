@@ -54,7 +54,7 @@ public class StructureController {
              if (y != oldY)
              {
                  if (0>oldY - y && oldY - y > -10) {
-                     currentWord.addToWord("<hoch>"+st_part+"</hoch>");
+                     currentWord.addToWord("["+st_part+"]");
                  } else {
                      if (currentWord!=null) {
                          if (!currentWord.devide()) {

@@ -7,7 +7,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="windowCtl.ResultWindowController">
    <children>
-      <Button fx:id="tab1" layoutX="513.0" layoutY="363.0" mnemonicParsing="false" onAction="#onPressClose" text="Button" />
+      <Button fx:id="btn_close" layoutX="513.0" layoutY="363.0" mnemonicParsing="false" onAction="#onPressClose" text="Button" />
       <TabPane fx:id="tabPane" prefHeight="363.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
 

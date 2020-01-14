@@ -32,7 +32,6 @@ public class Session {
 	 */
 	public void initialize(Stage stage){
 		this.stages[0] = stage;
-		pdfController = new PDFController();
 	}
 
 	/**
@@ -88,5 +87,6 @@ public class Session {
 
 	public void refreshStages() {
 		this.stages[1] = null;
+		pdfController = new PDFController();
 	}
 }
