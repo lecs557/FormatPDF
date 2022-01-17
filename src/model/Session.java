@@ -7,8 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import com.itextpdf.text.pdf.PdfReader;
-
 import controller.PDFController;
 
 /**
@@ -21,8 +19,7 @@ public class Session {
 	private Stage[] stages = new Stage[2];
 	private PDFController pdfController;
 	private String destinationPath, filePath;
-	private PdfReader pdfReader;
-	
+
 	public Session() {}
 
 	/**
@@ -67,14 +64,6 @@ public class Session {
 	
 	public Stage getStage(window window){
 		return stages[window.ordinal()];
-	}
-
-	public PdfReader getPdfReader() {
-		return pdfReader;
-	}
-
-	public void setPdfReader(PdfReader pdfReader) {
-		this.pdfReader = pdfReader;
 	}
 
 	public String getDestination() {

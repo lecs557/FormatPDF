@@ -1,7 +1,5 @@
 package controller;
 
-import com.itextpdf.text.pdf.parser.TextRenderInfo;
-import com.itextpdf.text.pdf.parser.Vector;
 import model.Chapter;
 import model.Paragraph;
 import model.Word;
@@ -26,10 +24,13 @@ public class StructureController {
     int x, y, size;
 
 
-    /**
+/*
+    */
+/**
      * Gets TextRenderInfo and puts it into words -> paragraphs -> chapter -> book
      * @param rinfo got from "Fontfilter", can contain a random number of charakters
-     */
+     *//*
+
     public void makeword(String st_part, TextRenderInfo rinfo) {
         String st_partWord = st_part;
         String font = rinfo.getFont().getPostscriptFontName();
@@ -85,6 +86,7 @@ public class StructureController {
          }
         oldY = y;
     }
+*/
 
     private void processWord(){
         if(!wordToProcess.getString().isEmpty()){

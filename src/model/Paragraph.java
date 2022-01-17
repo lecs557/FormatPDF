@@ -1,6 +1,5 @@
 package model;
 
-import com.itextpdf.text.pdf.parser.Vector;
 import controller.FormatController;
 
 import java.util.ArrayList;

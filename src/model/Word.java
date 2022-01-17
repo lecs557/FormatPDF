@@ -1,7 +1,5 @@
 package model;
 
-import com.itextpdf.text.pdf.parser.TextRenderInfo;
-import com.itextpdf.text.pdf.parser.Vector;
 import controller.FormatController;
 
 public class Word {
@@ -11,6 +9,7 @@ public class Word {
     private int x,y,size;
     private FormatController.format font;
 
+/*
     public Word(String partWord, TextRenderInfo tri){
         this.word=partWord;
         Vector startBase = tri.getBaseline().getStartPoint();
@@ -25,6 +24,7 @@ public class Word {
         word+=partWord;
     }
 
+*/
     public void addToWord(String partWord) {
         word+=partWord;
     }

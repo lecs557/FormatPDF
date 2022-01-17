@@ -28,7 +28,7 @@ public class Main extends Application {
 		stage.setTitle("PDF Filter");
 		stage.setScene(scene);        
 		stage.show();    
-		}
+	}
 	
 	/**
 	 * executes the method start in an new

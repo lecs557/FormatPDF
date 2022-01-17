@@ -14,7 +14,6 @@ import model.Main;
 import model.Session;
 import model.Session.window;
 
-import com.itextpdf.text.pdf.PdfReader;
 
 import controller.PDFController;
 
@@ -32,20 +31,22 @@ public class MainWindowController {
 	@FXML
 	private TextField tf_startPage, tf_endPage;
 		
-	private PdfReader reader;
+//	private PdfReader reader;
 	private int pages;
 	private int start;
 	private int i=start;
 	private int end;
-	
+
+
 	@FXML
-	/**
+/**
 	 * reads data from "mainWindow" and stores it in "Session"
 	 * reads pdf-file in second thread
 	 * sets progressBar's progress in third thread
 	 */
+
 	private void onPressOk() {
-		start = Integer.parseInt(tf_startPage.getText());
+/*		start = Integer.parseInt(tf_startPage.getText());
 		end = Integer.parseInt(tf_endPage.getText());
 		session.refreshStages();
         pdfctrl = session.getPDFController();
@@ -78,14 +79,16 @@ public class MainWindowController {
 		}).start();
 	}
 	
+*/}
 	@FXML
 	private void onPressAnalize() throws IOException{
 		session.openWindow(window.ResultWindow);
 	}
 
+
 	@FXML
 	private void onPressBrowse() throws IOException {
-		FileChooser fileChooser = new FileChooser();
+/*		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		File file = fileChooser.showOpenDialog(Main.getSession()
 				.getStage(window.MainWindow));
@@ -108,6 +111,7 @@ public class MainWindowController {
 			tf_pathDes.setText("");
 		}
 	}
+*/}
 
 	@FXML
 	private void onPressBrowseDes() throws IOException {
@@ -143,6 +147,6 @@ public class MainWindowController {
 	
 	private void readDataSendtoSession(){
 		session.setDestination(tf_pathDes.getText());
-		session.setPdfReader(reader);
+//		session.setPdfReader(reader);
 	}
 }

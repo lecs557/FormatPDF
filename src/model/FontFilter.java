@@ -1,12 +1,10 @@
 package model;
 
-import com.itextpdf.text.pdf.parser.RenderFilter;
-import com.itextpdf.text.pdf.parser.TextRenderInfo;
 
-public class FontFilter extends RenderFilter {
+public class FontFilter {
 		
 	
-	public FontFilter(){
+	/*public FontFilter(){
 		
 	}
 	
@@ -18,5 +16,5 @@ public class FontFilter extends RenderFilter {
 		return true;
 		
 		
-	}
+	}*/
 }
